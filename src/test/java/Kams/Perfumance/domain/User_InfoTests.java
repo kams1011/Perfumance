@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.DateUtil.now;
 
 
-public class UserTests {
+public class User_InfoTests {
 
 
 
@@ -23,14 +23,14 @@ public class UserTests {
          Date deldt = now();
          int tradenum = 11;
 
-         User user = new User(id, pwd, nick, regdt, deldt, tradenum);
+         User_Info userInfo = new User_Info(id, pwd, nick, regdt, deldt, tradenum);
 
 
-         assertThat(user.getId()).isEqualTo(id);
-         assertThat(user.getPwd()).isEqualTo(pwd);
-         assertThat(user.getDeldt()).isEqualTo(deldt);
-         assertThat(user.getRegdt()).isEqualTo(regdt);
-         assertThat(user.getTradenum()).isEqualTo(tradenum);
+         assertThat(userInfo.getId()).isEqualTo(id);
+         assertThat(userInfo.getPwd()).isEqualTo(pwd);
+         assertThat(userInfo.getDeldt()).isEqualTo(deldt);
+         assertThat(userInfo.getRegdt()).isEqualTo(regdt);
+         assertThat(userInfo.getDealnum()).isEqualTo(tradenum);
     }
 
 }
