@@ -1,36 +1,32 @@
 package Kams.Perfumance.domain;
 
 
+import org.apache.catalina.User;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.util.DateUtil.now;
-
-
 public class User_InfoTests {
 
 
-
     @Test
-    public void  UserDomain_Test(){
+    public void User_InfoTest(){
+        Date date = new Date();
+        User_Info user = User_Info.builder()
+                .id("kams")
+                .pwd("1234")
+                .nick("kams")
+                .deldt(null)
+                .regdt(date)
+                .dealnum(0)
+                .build();
 
-         String id="test";
-         String pwd="1234";
-         String nick="kams";
-         Date regdt = now();
-         Date deldt = now();
-         int tradenum = 11;
-
-         User_Info userInfo = new User_Info(id, pwd, nick, regdt, deldt, tradenum);
-
-
-         assertThat(userInfo.getId()).isEqualTo(id);
-         assertThat(userInfo.getPwd()).isEqualTo(pwd);
-         assertThat(userInfo.getDeldt()).isEqualTo(deldt);
-         assertThat(userInfo.getRegdt()).isEqualTo(regdt);
-         assertThat(userInfo.getDealnum()).isEqualTo(tradenum);
+        System.out.println(user.getId());
+        System.out.println(user.getPwd());
+        System.out.println(user.getNick());
+        System.out.println(user.getRegdt());
+        System.out.println(user.getDeldt());
+        System.out.println(user.getDealnum());
     }
 
 }
