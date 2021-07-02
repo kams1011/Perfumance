@@ -3,9 +3,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Kams.Perfumance.mapper.UserMapper">
-    <select id="findList" resultType="User_Info">
+    <select id="getList" resultType="User_Info">
         SELECT
           *
-        FROM User_Info
+        FROM user_info
     </select>
+
+
+    <insert id="Insert">
+        insert into user_info value()
+    </insert>
+
+
+
 </mapper>
