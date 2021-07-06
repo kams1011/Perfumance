@@ -1,18 +1,17 @@
-package Kams.Perfumance.domain;
+package Kams.Perfumance.vo;
 
 
-import org.apache.catalina.User;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
-public class User_InfoTests {
+public class User_VoTests {
 
 
     @Test
     public void User_InfoTest(){
         Date date = new Date();
-        User_Info user = User_Info.builder()
+        UserVo user = UserVo.builder()
                 .id("kams")
                 .pwd("1234")
                 .nick("kams")

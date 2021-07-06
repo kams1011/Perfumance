@@ -1,18 +1,16 @@
 package Kams.Perfumance.mapper;
 
 
-import Kams.Perfumance.domain.User_Info;
+import Kams.Perfumance.vo.UserVo;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+
 @Mapper
 public interface UserMapper {
 
-    List<User_Info> getList();
+    List<UserVo> getList();
 
-
-
+    void Insert(UserVo uvo);
 }
