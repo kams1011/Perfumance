@@ -42,7 +42,7 @@ public class HomeController {
                 .deldt(date)
                 .dealnum(0)
                 .build();
-        userService.Register(uvo);
+        userService.SignUp(uvo);
     }
 
     @GetMapping("/user")

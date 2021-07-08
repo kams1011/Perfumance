@@ -8,9 +8,14 @@
         SELECT * FROM user_info
     </select>
 
-    <insert id="Insert">
-        INSERT User_Info VALUES (#{id}, #{pwd}, #{nick}, #{email}, #{img}, #{regdt}, #{deldt}, #{dealnum});
+    <insert id="InsertUser"  useGeneratedKeys="true" keyProperty="uno">
+        INSERT INTO user_info(id,pwd,nick,email,regdt)
+        VALUE (#{id},#{pwd},#{nick},#{email},#{regdt})
     </insert>
+
+    <select id="findByUserId" resultType="Kams.Perfumance.vo.UserVo">
+        SELECT * FROM user_info WHERE id=#{id}
+    </select>
 
 
 

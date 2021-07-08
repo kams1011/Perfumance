@@ -12,7 +12,7 @@ public interface UserService {
 
     public List<UserVo> getAllUser();
 
-    public void Register(UserVo userVo);
+    public int SignUp(UserVo userVo);
 }
 
 

@@ -18,11 +18,13 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<UserVo> getAllUser() {
+
       return userMapper.getList();
     }
 
     @Override
-    public void Register(UserVo userVo) {
-        userMapper.Insert(userVo);
+    public int SignUp(UserVo userVo) {
+
+       return userMapper.InsertUser(userVo);
     }
 }

@@ -25,7 +25,7 @@ public class UserMapperTests {
     @Test
     public void insertTest(){
         UserVo uvo = UserVo.builder()
-                .id("3")
+                .id("7")
                 .pwd("3")
                 .nick("3")
                 .email("3")
@@ -36,7 +36,7 @@ public class UserMapperTests {
                 .build();
 
         try{
-           uMapper.Insert(uvo);
+           uMapper.InsertUser(uvo);
         }catch(Exception e){
             System.out.println("인서트 에러입니다.");
         }
