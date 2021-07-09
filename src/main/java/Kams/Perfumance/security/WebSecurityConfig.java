@@ -4,14 +4,12 @@ import Kams.Perfumance.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration //이 클래스로 각종 설정을 하겠다.
@@ -19,17 +17,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Autowired
-    SecurityService homeService;
+    SecurityService securityService;
 
     @Bean //회원가입시 비밀번호 암호화.
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
-    @Bean //실제 인증을 한 이후 인증이 완료되면 Authentication객체 반환.
-    public DaoAuthenticationProvider authenticationProvider(SecurityService homeService){
+    @Bean //실제 인증을 한 이후 인증이 완료되면 Authentication객체 반환. 화면에서 입력한 로그인정보와 DB에서 가져온 사용자 정보 비교
+    public DaoAuthenticationProvider authenticationProvider(SecurityService securityService){
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(homeService);
+        authenticationProvider.setUserDetailsService(securityService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
@@ -48,9 +46,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .and()
-                .formLogin();
+             .formLogin()
+//                .loginPage("/login-page")
+//                .loginProcessingUrl("/login-process")
+                .defaultSuccessUrl("/home/user");
+//                .successHandler(new CustomAuthenticationSuccessHandler("/main"))
+//                .failureUrl("login-fail");
+//                .failureHandler(new CustomAuthenticationFailureHandler("/login-fail"))
 
-//        http.formLogin();
+
         http.exceptionHandling().accessDeniedPage("/accessDenied"); //에러페이지로 이동
         http.logout().logoutUrl("/logout").invalidateHttpSession(true);
 
@@ -58,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-     auth.authenticationProvider(authenticationProvider(homeService));
+        auth.authenticationProvider(authenticationProvider(securityService));
     }
 
 

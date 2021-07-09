@@ -1,8 +1,9 @@
 package Kams.Perfumance.service;
 
-import Kams.Perfumance.mapper.UserMapper;
+import Kams.Perfumance.mapper.MemberMapper;
 import Kams.Perfumance.vo.MemberPrincipalVo;
-import Kams.Perfumance.vo.UserVo;
+import Kams.Perfumance.vo.RoleVo;
+import Kams.Perfumance.vo.MemberVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 public class SecurityService implements UserDetailsService {
 
         @Autowired
-        private UserMapper userMapper;
+        private MemberMapper memberMapper;
 
         @Autowired
         private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -26,9 +27,7 @@ public class SecurityService implements UserDetailsService {
     //DB에서 유저정보를 불러온다. Custom한 Userdetails 클래스를 리턴 해주면 된다.(실질적인 로그인코드)
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-        System.out.println("id : "+id);
-        ArrayList<UserVo> userAuthes = userMapper.findByUserId(id);
-        System.out.println("userAuthes size : "+userAuthes.size());
+        ArrayList<MemberVo> userAuthes = memberMapper.findByUserId(id);
 
         if(userAuthes.size() == 0) {
             throw new UsernameNotFoundException("User "+id+" Not Found!");
@@ -39,17 +38,14 @@ public class SecurityService implements UserDetailsService {
 
     //
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-    public String SignUp(UserVo userVo throws Exception {
-        userVo.builder().pwd((bCryptPasswordEncoder.encode(userVo.getPwd())));
-        int flag = userMapper.InsertUser(userVo);
+    public String SignUp(MemberVo memberVo, RoleVo roleVo) throws Exception {
+        memberVo.builder().pwd((bCryptPasswordEncoder.encode(memberVo.getPwd())));
+        int flag = memberMapper.InsertUser(memberVo);
         System.out.println("flag num : "+flag);
 
         if (flag > 0) {
-            userVo.builder().role("USER");
-            int roleNo = userMapper.findRoleNo(userVo.getRole());
-            System.out.println("roleNo : "+roleNo);
-            String id = userVo.getId();
-            userMapper.userRoleSave(id, roleNo);
+            int uno = memberVo.getUno();
+            memberMapper.userRoleSave(uno, 2);
 
             return "success";
         }

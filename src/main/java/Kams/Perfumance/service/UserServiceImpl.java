@@ -1,7 +1,7 @@
 package Kams.Perfumance.service;
 
-import Kams.Perfumance.mapper.UserMapper;
-import Kams.Perfumance.vo.UserVo;
+import Kams.Perfumance.mapper.MemberMapper;
+import Kams.Perfumance.vo.MemberVo;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,17 +14,17 @@ import java.util.List;
 public class UserServiceImpl implements UserService{
 
     @Autowired
-    UserMapper userMapper;
+    MemberMapper memberMapper;
 
     @Override
-    public List<UserVo> getAllUser() {
+    public List<MemberVo> getAllUser() {
 
-      return userMapper.getList();
+      return memberMapper.getList();
     }
 
     @Override
-    public int SignUp(UserVo userVo) {
+    public int SignUp(MemberVo memberVo) {
 
-       return userMapper.InsertUser(userVo);
+       return memberMapper.InsertUser(memberVo);
     }
 }

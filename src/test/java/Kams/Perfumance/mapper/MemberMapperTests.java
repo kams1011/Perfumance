@@ -1,7 +1,7 @@
 package Kams.Perfumance.mapper;
 
 
-import Kams.Perfumance.vo.UserVo;
+import Kams.Perfumance.vo.MemberVo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -10,9 +10,9 @@ import java.util.Date;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-public class UserMapperTests {
+public class MemberMapperTests {
 
-    private UserMapper uMapper;
+    private MemberMapper uMapper;
     Date date = new Date();
 
 
@@ -24,7 +24,7 @@ public class UserMapperTests {
 
     @Test
     public void insertTest(){
-        UserVo uvo = UserVo.builder()
+        MemberVo uvo = MemberVo.builder()
                 .id("7")
                 .pwd("3")
                 .nick("3")
@@ -32,7 +32,6 @@ public class UserMapperTests {
                 .img("3")
                 .regdt(date)
                 .deldt(date)
-                .dealnum(0)
                 .build();
 
         try{

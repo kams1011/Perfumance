@@ -1,55 +1,47 @@
 package Kams.Perfumance.vo;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 
 //@SuppressWarnings("serial") // java.io.Serializable 인터페이스 구현할때 serialVersionUID 정의 안하면 생기는 오류 막아줌
 public class MemberPrincipalVo implements UserDetails {
 
-    private ArrayList<UserVo> userVo;
+    private ArrayList<MemberVo> memberVo;
+    private ArrayList<GrantedAuthority> authorities;
 
-    public MemberPrincipalVo(ArrayList<UserVo> userAuthes){
-        this.userVo = userAuthes;
+    public MemberPrincipalVo(ArrayList<MemberVo> userAuthes){
+        this.memberVo = userAuthes;
     }
 
+    @Override // 계정이 갖고있는 권한 목록을 리턴한다.
     public Collection<? extends GrantedAuthority> getAuthorities(){
+        ArrayList<GrantedAuthority> authList = new ArrayList<GrantedAuthority>(authorities);
 
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-
-        for(int i=0; i<userVo.size(); i++){
-            authorities.add(new SimpleGrantedAuthority(userVo.get(i).getRole()));
-        }
-        return authorities;
+        return authList;
     }
 
     @Override // 유저 아이디
     public String getUsername(){
 
-        return userVo.get(0).getId();
+        return memberVo.get(0).getId();
     }
     
     
     @Override // 유저 비밀번호
     public String getPassword(){
 
-        return userVo.get(0).getPwd();
+        return memberVo.get(0).getPwd();
     }
 
 
     @Override // 계정 활성화 여부
     public boolean isEnabled(){
 
-        if(userVo.get(0).getEnable()=='Y'){
-            return true;
-        }else{
-            return false;
-        }
+      return true;
 
     }
 

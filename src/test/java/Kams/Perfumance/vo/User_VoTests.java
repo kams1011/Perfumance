@@ -11,13 +11,12 @@ public class User_VoTests {
     @Test
     public void User_InfoTest(){
         Date date = new Date();
-        UserVo user = UserVo.builder()
+        MemberVo user = MemberVo.builder()
                 .id("kams")
                 .pwd("1234")
                 .nick("kams")
                 .deldt(null)
                 .regdt(date)
-                .dealnum(0)
                 .build();
 
         System.out.println(user.getId());
@@ -25,7 +24,6 @@ public class User_VoTests {
         System.out.println(user.getNick());
         System.out.println(user.getRegdt());
         System.out.println(user.getDeldt());
-        System.out.println(user.getDealnum());
     }
 
 }
