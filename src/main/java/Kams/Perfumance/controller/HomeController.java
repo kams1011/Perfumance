@@ -4,6 +4,7 @@ package Kams.Perfumance.controller;
 import Kams.Perfumance.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
@@ -25,18 +26,25 @@ public class HomeController {
 
 
     @GetMapping("insert")
-    public void insertTest(){
+    public void insertTest(Model model){
 
     }
 
-//    @GetMapping("/user")
-//    public String User(Model model){
-//
-//
-//        model.addAttribute("list",  userService.getAllUser().get(2).getId());
-//
-//        return "home/user";
-//    }
+    @GetMapping("home/user")
+    public String Usertest(Model model){
+
+
+
+        return "home/user";
+    }
+
+    @GetMapping("test")
+    public String User(Model model){
+
+
+
+        return "board/test";
+    }
 
 
 }

@@ -2,29 +2,30 @@ package Kams.Perfumance.service;
 
 import Kams.Perfumance.mapper.MemberMapper;
 import Kams.Perfumance.vo.MemberVo;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
 @Service
-@AllArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
-    @Autowired
     MemberMapper memberMapper;
+    Date date = new Date();
+
+    public UserServiceImpl(MemberMapper memberMapper) {
+        this.memberMapper = memberMapper;
+    }
 
     @Override
     public List<MemberVo> getAllUser() {
 
-      return memberMapper.getList();
+        return memberMapper.getList();
     }
 
-    @Override
-    public int SignUp(MemberVo memberVo) {
 
-       return memberMapper.InsertUser(memberVo);
-    }
 }
