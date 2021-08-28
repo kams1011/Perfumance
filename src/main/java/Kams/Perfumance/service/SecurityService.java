@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -57,33 +58,35 @@ public class SecurityService implements UserDetailsService {
 //        return "fail";
 //    }
 
-    public void SignUp(MemberVo memberVo) {
+    public void SignUp(String id, String pwd, String nick, String email) {
         try {
+            Integer m = memberMapper.findUserNo(id);
 
-            ArrayList<MemberVo> m = memberMapper.findByUserId(memberVo.getId());
             // 이미 유저가 존재할 때
             if (m != null) {
+                System.out.println(m);
                 System.out.println("이미 사용중인 ID입니다.");
             }else{
                 // 비밀번호 암호화
-                String encodePassword = bCryptPasswordEncoder.encode(memberVo.getPwd());
+                String encodePassword = bCryptPasswordEncoder.encode(pwd);
                 MemberVo member = MemberVo.builder()
                         .enable('Y')
-                        .id(memberVo.getId())
-                        .nick(memberVo.getNick())
-                        .email(memberVo.getEmail())
+                        .id(id)
+                        .pwd(encodePassword)
+                        .nick(nick)
+                        .email(email)
                         .img("baseImg")
                         .regdt(date)
                         .deldt(null)
-                        .dealnum(0)
-                        .pwd(encodePassword).build();
+                        .dealnum(0).build();
 
                 memberMapper.InsertUser(member);
                 System.out.println("회원가입 완료.");
             }
         }catch(Exception e) {
             //Rollback
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            e.printStackTrace();
+//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             System.out.println("회원가입 에러 발생.");
         }
     }

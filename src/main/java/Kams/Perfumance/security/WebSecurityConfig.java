@@ -4,6 +4,7 @@ import Kams.Perfumance.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,11 +14,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration //이 클래스로 각종 설정을 하겠다.
-@EnableWebSecurity // Spring Security를 설정할 클래스라고 정의.
+@EnableWebSecurity // Spring Security를 설정할 클래스라고 정의. -> 자동으로 springSecurityFilterChain이 포함됨.
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
-    @Autowired
-    SecurityService securityService;
+//    @Autowired
+//    SecurityService securityService;
+
+    private AuthenticationProvider authenticationProvider;
 
     @Bean //회원가입시 비밀번호 암호화.
     public BCryptPasswordEncoder passwordEncoder(){
@@ -60,10 +63,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-        auth.authenticationProvider(authenticationProvider(securityService));
-    }
+//    @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+////        auth.authenticationProvider(authenticationProvider(securityService));
+//        auth.authenticationProvider(authenticationProvider);
+//    }
 
 
 

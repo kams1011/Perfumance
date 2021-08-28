@@ -11,6 +11,8 @@ public interface UserService {
 
     public List<MemberVo> getAllUser();
 
+    public int getUserNo(String id);
+
 }
 
 

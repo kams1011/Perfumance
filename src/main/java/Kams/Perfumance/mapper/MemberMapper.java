@@ -3,6 +3,7 @@ package Kams.Perfumance.mapper;
 
 import Kams.Perfumance.vo.MemberVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public interface MemberMapper {
     int userRoleSave(int userNo, int roleNo);
 
     //유저 FK번호 알아내기
-    int findUserNo(String id);
+    Integer findUserNo(String id);
 
     //권한 FK번호 알아내기
     int findRoleNo(String authority);

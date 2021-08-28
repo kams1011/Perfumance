@@ -27,5 +27,16 @@ public class UserServiceImpl implements UserService {
         return memberMapper.getList();
     }
 
+    @Override
+    public int getUserNo(String id){
+         return memberMapper.findUserNo(id);
+
+
+    }
+
 
 }
+
+
+
+

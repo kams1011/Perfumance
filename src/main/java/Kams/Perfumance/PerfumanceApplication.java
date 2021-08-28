@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan(basePackages = "Kams.Perfumance.mapper")
+@MapperScan(basePackageClasses = PerfumanceApplication.class)
 public class PerfumanceApplication {
 
 	public static void main(String[] args) {
