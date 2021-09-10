@@ -13,14 +13,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.sql.DataSource;
+
 @Configuration //이 클래스로 각종 설정을 하겠다.
 @EnableWebSecurity // Spring Security를 설정할 클래스라고 정의. -> 자동으로 springSecurityFilterChain이 포함됨.
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
-//    @Autowired
-//    SecurityService securityService;
-
-    private AuthenticationProvider authenticationProvider;
+    @Autowired
+    private DataSource dataSource;
 
     @Bean //회원가입시 비밀번호 암호화.
     public BCryptPasswordEncoder passwordEncoder(){
@@ -45,29 +45,45 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         http.authorizeRequests()
-                .antMatchers("/home/**").permitAll()
-                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/home/**","/access/**").permitAll()
+                .and()
+             .authorizeRequests()
+                .antMatchers("/board/**","/user/**").hasRole("USER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
                 .and()
              .formLogin()
-//                .loginPage("/login-page")
-//                .loginProcessingUrl("/login-process")
-                .defaultSuccessUrl("/home/user");
+                .loginPage("/access/login")
+                .permitAll()
+//                .loginProcessingUrl("/login-process") // post로 로그인 정보를 보낼시 경로.
+                .defaultSuccessUrl("/home/main", true) //로그인 성공 이후 이동할 페이지
+                .and()
+             .logout()
+                .permitAll();
 //                .successHandler(new CustomAuthenticationSuccessHandler("/main"))
 //                .failureUrl("login-fail");
 //                .failureHandler(new CustomAuthenticationFailureHandler("/login-fail"))
 
 
+
         http.exceptionHandling().accessDeniedPage("/accessDenied"); //에러페이지로 이동
-        http.logout().logoutUrl("/logout").invalidateHttpSession(true);
+//        http.logout().logoutUrl("/logout").invalidateHttpSession(true);
 
     }
 
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-////        auth.authenticationProvider(authenticationProvider(securityService));
-//        auth.authenticationProvider(authenticationProvider);
-//    }
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+        auth.jdbcAuthentication()
+                .dataSource(dataSource)
+                .passwordEncoder(passwordEncoder())
+                .usersByUsernameQuery("select id,pwd,enabled "
+                        + "from user_info "
+                        + "where id = ?")
+                .authoritiesByUsernameQuery("select id,role "
+                        + "from user_role ur inner join user_info ui on ur.uno = ui.uno"
+                        + "inner join role r on ur.rno = r.rno"
+                        + "where id = ?");
+    }
 
 
 

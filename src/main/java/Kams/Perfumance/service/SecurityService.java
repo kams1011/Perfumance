@@ -45,18 +45,7 @@ public class SecurityService implements UserDetailsService {
     }
 
 //    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-//    public String SignUp(MemberVo memberVo, RoleVo roleVo){
-//        memberVo.builder().pwd((bCryptPasswordEncoder.encode(memberVo.getPwd())));
-//        memberMapper.InsertUser(memberVo);
-//
-//        if (memberMapper.InsertUser(memberVo) > 0) {
-//            int uno = memberVo.getUno();
-//            memberMapper.userRoleSave(uno, 2);
-//
-//            return "success";
-//        }
-//        return "fail";
-//    }
+
 
     public void SignUp(String id, String pwd, String nick, String email) {
         try {
@@ -79,8 +68,8 @@ public class SecurityService implements UserDetailsService {
                         .regdt(date)
                         .deldt(null)
                         .dealnum(0).build();
-
                 memberMapper.InsertUser(member);
+                //rno는 2로 user_role에 추가하기. 트랜잭션 처리하기.
                 System.out.println("회원가입 완료.");
             }
         }catch(Exception e) {

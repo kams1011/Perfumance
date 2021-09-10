@@ -1,0 +1,19 @@
+
+#mainBox{
+    height: 500px;
+    background-color: #FFF8E5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#search{
+    height:40px;
+    width:400px;
+}
+
+input::placeholder {
+    color:rgb(174, 174, 174);
+    font-style: italic;
+    text-align:center;
+  }

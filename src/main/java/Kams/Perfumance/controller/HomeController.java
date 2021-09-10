@@ -30,7 +30,7 @@ public class HomeController {
 
     @GetMapping("select")
     public String selectTest(){
-        String id="21";
+        String id="24";
         String pwd="1234";
         String nick="kk";
         String email="dfas";
@@ -61,5 +61,6 @@ public class HomeController {
     public String SignUp(){
         return "board/test";
     }
+
 
 }

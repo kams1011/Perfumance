@@ -1,0 +1,41 @@
+.goods{
+    height:300px;
+    width:250px;
+    border:1px solid black;
+    border-radius: 5px;
+    
+}
+
+.goodsPicture{
+    background-color:rgb(174, 174, 174);
+    border-bottom:1px solid black;
+    border-radius: 5px;
+    height:150px;
+}
+
+.goodsContents{
+    height:150px;
+}
+
+#goodsDetailBox{
+    background-color: black;
+    margin:0 auto; 
+    width:800px;
+}
+
+#goodsDetailPic{
+    background-color: gray;
+    width: 400px;
+    height: 400px;
+}
+
+#goodsDetail{
+    background-color: white;
+    
+    width: 400px;
+}
+
+p{
+    font-size: 12px;
+}
+

@@ -1,0 +1,28 @@
+#header{
+    background-color: #00A19D;
+    height: 80px;
+}
+
+#logo{
+    font-size:40px;
+    width:300px;
+    text-align: center;
+}
+
+.headContent{
+    color:white;
+    display: inline-block;
+    height:60px;
+    word-break:break-all;
+    height:100px;
+    line-height:80px;
+    font-weight: 600;
+}
+
+.headRight{
+    width:100px;
+    float: right;
+    font-size:20px;
+    font-weight: bolder;
+}
+

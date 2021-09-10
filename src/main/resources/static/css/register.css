@@ -1,0 +1,50 @@
+#mainBox{
+    color:#FFB344;
+    height: 500px;
+    background-color: #FFF8E5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#registBox{
+    width:300px;
+    justify-content: center;
+    align-items: center;
+}
+
+#registHead{
+    text-align: center;
+    font-weight: bolder;
+    font-size: 30px;
+    margin-bottom:60px;
+}
+
+#button{
+    margin-left:120px;
+    margin-top:40px;
+    background-color: #FFB344;
+    color:white;
+    border:none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    height:20px;
+}
+
+.input{
+    background-color: #FFF8E5;
+    height:30px;
+    width:300px;
+    border-bottom: gray 1px solid;
+    border-top:none;
+    border-left:none;
+    border-right:none;
+    margin-bottom: 30px;
+}
+
+input::placeholder {
+    color:rgb(174, 174, 174);
+  }
+
+
