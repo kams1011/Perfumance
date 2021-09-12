@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override //Home 디렉토리 하위 파일 목록은 항상 통과
     public void configure(WebSecurity web) throws Exception{
-        web.ignoring().antMatchers("/home/**");
+        web.ignoring().antMatchers("/css/**");
     }
 
 
