@@ -14,6 +14,7 @@ import java.util.List;
 
 
 @Controller
+@RequestMapping("/home")
 public class HomeController {
     //Restcontroller로 하면 String만 반환되는 이유??
 
@@ -21,45 +22,26 @@ public class HomeController {
     private final SecurityService sService;
 
 
-
-
     public HomeController(UserServiceImpl userService, SecurityService sService){
         this.userService=userService;
         this.sService=sService;
     }
 
+
     @GetMapping("select")
     public String selectTest(){
-        String id="24";
+        String id="dada4202";
         String pwd="1234";
-        String nick="kk";
-        String email="dfas";
+        String nick="ingda";
+        String email="dada4202@naver.com";
         sService.SignUp(id,pwd,nick,email);
         return "home/select";
 
     }
 
-
-    @GetMapping("insert")
-    public void insertTest(Model model){
-
-    }
-
-    @GetMapping("htest")
-    public String Usertest(Model model){
-
-        return "home/user";
-    }
-
-    @GetMapping("test")
-    public String User(Model model){
-        return "board/test";
-    }
-
-
-    @GetMapping("signup")
-    public String SignUp(){
-        return "board/test";
+    @GetMapping("main")
+    public String main(){
+        return "home/main";
     }
 
 

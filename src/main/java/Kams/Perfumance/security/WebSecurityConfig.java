@@ -55,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
              .formLogin()
                 .loginPage("/access/login")
                 .permitAll()
-//                .loginProcessingUrl("/login-process") // post로 로그인 정보를 보낼시 경로.
+               .loginProcessingUrl("/login-process") // post로 로그인 정보를 보낼시 경로.
                 .defaultSuccessUrl("/home/main", true) //로그인 성공 이후 이동할 페이지
                 .and()
              .logout()
@@ -79,11 +79,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .usersByUsernameQuery("select id,pwd,enabled "
                         + "from user_info "
                         + "where id = ?")
-                .authoritiesByUsernameQuery("select id,role "
-                        + "from user_role ur inner join user_info ui on ur.uno = ui.uno"
-                        + "inner join role r on ur.rno = r.rno"
-                        + "where id = ?");
+                .authoritiesByUsernameQuery("select ui.id, r.role "
+                        + "from user_role ur inner join user_info ui on ur.uno = ui.uno "
+                        + "inner join role r on ur.rno = r.rno "
+                        + "where ui.id = ?");
     }
+
 
 
 

@@ -17,15 +17,17 @@
         SELECT * FROM user_info WHERE id=#{id}
     </select>
 
-    <insert id="userRoleSave">
+
+
+    <insert id="userRoleSave" parameterType="map">
         INSERT INTO user_role
         (uno,rno)
-        VALUES
+        VALUE
         (#{uno},#{rno})
     </insert>
 
 
-    <select id="findUserNo" resultType="Integer">
+    <select id="findUserNo" resultType="int">
         SELECT
             uno
         FROM user_info

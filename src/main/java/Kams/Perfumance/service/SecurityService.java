@@ -4,6 +4,8 @@ import Kams.Perfumance.mapper.MemberMapper;
 import Kams.Perfumance.vo.MemberPrincipalVo;
 import Kams.Perfumance.vo.RoleVo;
 import Kams.Perfumance.vo.MemberVo;
+import Kams.Perfumance.vo.UserRoleVo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -46,8 +48,7 @@ public class SecurityService implements UserDetailsService {
 
 //    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
 
-
-    public void SignUp(String id, String pwd, String nick, String email) {
+    public void SignUp(@Param("id") String id, @Param("pwd") String pwd, @Param("nick") String nick, @Param("email") String email) {
         try {
             Integer m = memberMapper.findUserNo(id);
 
@@ -68,8 +69,22 @@ public class SecurityService implements UserDetailsService {
                         .regdt(date)
                         .deldt(null)
                         .dealnum(0).build();
+
+
                 memberMapper.InsertUser(member);
-                //rno는 2로 user_role에 추가하기. 트랜잭션 처리하기.
+
+                UserRoleVo userRoleVo = UserRoleVo.builder()
+                        .uno(memberMapper.findUserNo(id))
+                        .rno(2)
+                        .build();
+
+                System.out.println(userRoleVo.getRno() + " // " + userRoleVo.getUno());
+
+                memberMapper.userRoleSave(userRoleVo.getUno(), userRoleVo.getRno());
+
+//                insert 후에 uno값을 받아와서 uno를 넣어주고, 그 후에 rno를 하드코딩해서 넣어주면 될듯.
+//                그럼 먼저 uno 받아오는 mapper 생성하고 그 후에 insert 하기.
+//                rno는 2로 user_role에 추가하기. 트랜잭션 처리하기.
                 System.out.println("회원가입 완료.");
             }
         }catch(Exception e) {
@@ -79,6 +94,9 @@ public class SecurityService implements UserDetailsService {
             System.out.println("회원가입 에러 발생.");
         }
     }
+
+
+
 
 }
 

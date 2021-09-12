@@ -20,10 +20,5 @@ public class MemberController {
     }
 
 
-    @ResponseBody
-    @RequestMapping(value ="/resttest", method = RequestMethod.GET)
-    public String RestTest(){
-        return "rest";
-    }
 
 }
