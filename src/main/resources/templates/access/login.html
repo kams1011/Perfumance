@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <link th:href="@{/css/login.css}" rel="stylesheet" />
 </head>
-<!--<header include-html="/static/common/header.html"></header>-->
-
-
+<body>
+<header th:insert="common/fragment.html :: header"> </header>
 <div id="mainBox">
     <div id="registBox">
         <div id="registHead">로그인</div>
@@ -15,6 +14,7 @@
         <button type="button" id="button">Submit</button>
     </div>
 </div>
+<footer th:insert="common/fragment.html :: footer"> </footer>
 
 <!--자바 버전 수정해서 groovy error는 고쳤지만 여전히 css파일 적용은 안되는중. -->
 <!--<footer include-html="/static/common/footer.html"></footer>-->

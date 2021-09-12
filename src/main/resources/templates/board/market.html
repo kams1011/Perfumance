@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../../static/css/market.css"/>
 </head>
 <body>
-    <header include-html="/static/common/header.html"></header>
+    <header th:insert="common/fragment.html :: header"> </header>
 
         <div id="goodsDetailBox">
         <div id="goodsDetailPic">1</div>
@@ -34,6 +34,7 @@
 
                 </div>
         </div>
-    <footer include-html="/static/common/footer.html"></footer>
+
+    <footer th:insert="common/fragment.html :: footer"> </footer>
 </body>
 </html>

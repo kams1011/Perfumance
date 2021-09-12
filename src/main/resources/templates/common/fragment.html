@@ -4,15 +4,35 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link th:href="@{/css/header.css}" rel="stylesheet" />
+
 </head>
 <body>
-<div id="header">
+
+
+
+<!--         Header Fragment          -->
+
+<div id="header" th:fragment="header">
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
     <div id="logo" class="headContent">Perfumance</div>
     <div id="market" class="headContent headRight">Market</div>
     <div id="board" class="headContent headRight">Board</div>
     <div id="login" class="headContent headRight">Login</div>
 </div>
+
+
+
+
+
+<!--         Footer Fragment          -->
+
+<div id="footer" th:fragment="footer">
+    <link th:href="@{/css/footer.css}" rel="stylesheet" />
+    <p>Perfumance<br>
+        Copyrightⓒ2021 by Kams</p>
+</div>
+
+
 </body>
 </html>
 
