@@ -1,5 +1,5 @@
 #header{
-    background-color: #00A19D;
+    /*background-color: #00A19D;*/
     height: 80px;
 }
 
@@ -10,7 +10,7 @@
 }
 
 .headContent{
-    color:white;
+    color:black;
     display: inline-block;
     height:60px;
     word-break:break-all;
@@ -26,3 +26,4 @@
     font-weight: bolder;
 }
 
+a { text-decoration:none }

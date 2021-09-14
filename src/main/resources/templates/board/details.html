@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link th:href="@{/css/details.css}" rel="stylesheet" />
+</head>
+<body>
+    <header th:insert="common/fragment.html :: header"> </header>
+
+    <div id="wrapper">
+        <div id="detailsTop">
+            <div id="picture">
+                향수 사진
+            </div>
+            <div id="feature">
+                <p>이름</p> <br>
+                <p>제조사</p> <br>
+                <p>탑노트</p> <br>
+                <p>미들노트</p> <br>
+                <p>바텀노트</p> <br>
+                <p>예비1</p> <br>
+                <p>예비2</p>
+            </div>
+        </div>
+        <div id="detailsBottom">
+            <p>이하는 계층형 댓글입니다.</p>
+        </div>
+    </div>
+
+    <footer th:insert="common/fragment.html :: footer"> </footer>
+</body>
+</html>

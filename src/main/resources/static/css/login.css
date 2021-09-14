@@ -1,3 +1,4 @@
+
 #mainBox{
     color:#FFB344;
     height: 700px;
@@ -5,6 +6,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
 }
 
 #registBox{

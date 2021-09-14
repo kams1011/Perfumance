@@ -14,10 +14,10 @@
 
 <div id="header" th:fragment="header">
     <link th:href="@{/css/header.css}" rel="stylesheet" />
-    <div id="logo" class="headContent">Perfumance</div>
-    <div id="market" class="headContent headRight">Market</div>
-    <div id="board" class="headContent headRight">Board</div>
-    <div id="login" class="headContent headRight">Login</div>
+    <div id="logo" class="headContent"><a th:href="@{/home/main}">Perfumance</a></div>
+    <div id="market" class="headContent headRight"><a th:href="@{/board/market}">Market</a></div>
+    <div id="board" class="headContent headRight"><a th:href="@{/board/result}">Board</a></div>
+    <div id="login" class="headContent headRight"><a th:href="@{/access/login}">Login</a></div>
 </div>
 
 

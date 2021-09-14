@@ -14,16 +14,18 @@
     <div th:if="${param.logout}">
         You have been logged out.
     </div>
+
     <form th:action="@{/login-process}" method="post">
-        <div id="mainBox">
-            <div id="registBox">
-                <div id="registHead">로그인</div>
-                <input id="id" class="input" name="username" placeholder="ID"><br>
-                <input id="password" class="input" name="password" placeholder="Password"><br>
-                <button type="submit" id="button">Submit</button>
+            <div id="mainBox">
+                <div id="registBox">
+                    <div id="registHead">로그인</div>
+                    <input id="id" class="input" name="username" placeholder="ID"><br>
+                    <input id="password" class="input" name="password" placeholder="Password"><br>
+                    <button type="submit" id="button">Submit</button>
+                </div>
             </div>
-        </div>
     </form>
+
     <footer th:insert="common/fragment.html :: footer"> </footer>
 
     <script>

@@ -27,18 +27,6 @@ public class HomeController {
         this.sService=sService;
     }
 
-
-    @GetMapping("select")
-    public String selectTest(){
-        String id="dada4202";
-        String pwd="1234";
-        String nick="ingda";
-        String email="dada4202@naver.com";
-        sService.SignUp(id,pwd,nick,email);
-        return "home/select";
-
-    }
-
     @GetMapping("main")
     public String main(){
         return "home/main";

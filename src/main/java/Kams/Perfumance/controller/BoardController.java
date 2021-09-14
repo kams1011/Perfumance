@@ -16,5 +16,15 @@ public class BoardController {
         return "board/market";
     }
 
+    @GetMapping("details")
+    public String details(){
+        return "board/details";
+    }
+
+    @GetMapping("result")
+    public String result(){
+        return "board/result";
+    }
+
 
 }

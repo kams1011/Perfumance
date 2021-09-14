@@ -69,22 +69,16 @@ public class SecurityService implements UserDetailsService {
                         .regdt(date)
                         .deldt(null)
                         .dealnum(0).build();
-
-
+                //DB에 회원정보 등록
                 memberMapper.InsertUser(member);
-
+                //ROLE 등록을 위한 객체 생성
                 UserRoleVo userRoleVo = UserRoleVo.builder()
                         .uno(memberMapper.findUserNo(id))
                         .rno(2)
                         .build();
-
-                System.out.println(userRoleVo.getRno() + " // " + userRoleVo.getUno());
-
+                //DB에 ROLE 등록
                 memberMapper.userRoleSave(userRoleVo.getUno(), userRoleVo.getRno());
 
-//                insert 후에 uno값을 받아와서 uno를 넣어주고, 그 후에 rno를 하드코딩해서 넣어주면 될듯.
-//                그럼 먼저 uno 받아오는 mapper 생성하고 그 후에 insert 하기.
-//                rno는 2로 user_role에 추가하기. 트랜잭션 처리하기.
                 System.out.println("회원가입 완료.");
             }
         }catch(Exception e) {

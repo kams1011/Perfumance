@@ -8,16 +8,18 @@
     <link th:href="@{/css/main.css}" rel="stylesheet" />
 </head>
 <body>
+
     <header th:insert="common/fragment.html :: header"> </header>
+        <div id="wrapper">
+            <div class="mainBox" id="mainBox">
 
-        <div class="mainBox" id="mainBox">
+                <div id="serchDiv">
+                <input id="search" placeholder="찾고 싶은 향수를 검색해보세요.">
+                </div>
 
-            <div id="serchDiv">
-            <input id="search" placeholder="찾고 싶은 향수를 검색해보세요.">
             </div>
-
         </div>
-
     <footer th:insert="common/fragment.html :: footer"> </footer>
+
 </body>
 </html>
