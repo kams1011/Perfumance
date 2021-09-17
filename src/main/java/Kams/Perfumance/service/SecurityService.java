@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -36,17 +37,14 @@ public class SecurityService implements UserDetailsService {
 
     //DB에서 유저정보를 불러온다. Custom한 Userdetails 클래스를 리턴 해주면 된다.(실질적인 로그인코드)
     @Override
-    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-        ArrayList<MemberVo> userAuthes = memberMapper.findByUserId(id);
+    public MemberPrincipalVo loadUserByUsername(String username) throws UsernameNotFoundException {
+        ArrayList<MemberVo> memberVos = memberMapper.findByUserId(username);
+        MemberPrincipalVo memberPrincipalVo = new MemberPrincipalVo(memberVos);
+//        memberMapper.resetTryCount(memberVos.get(0).getId());
 
-        if(userAuthes.size() == 0) {
-            throw new UsernameNotFoundException("User "+id+" Not Found!");
-        }
+            return memberPrincipalVo;
 
-        return new MemberPrincipalVo(userAuthes);
     }
-
-//    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
 
     public void SignUp(@Param("id") String id, @Param("pwd") String pwd, @Param("nick") String nick, @Param("email") String email) {
         try {
@@ -60,15 +58,16 @@ public class SecurityService implements UserDetailsService {
                 // 비밀번호 암호화
                 String encodePassword = bCryptPasswordEncoder.encode(pwd);
                 MemberVo member = MemberVo.builder()
-                        .enable('Y')
+                        .enable("true")
                         .id(id)
                         .pwd(encodePassword)
                         .nick(nick)
                         .email(email)
                         .img("baseImg")
-                        .regdt(date)
-                        .deldt(null)
-                        .dealnum(0).build();
+                        .regDt(date)
+                        .delDt(null)
+                        .dealnum(0)
+                        .tryNum(0).build();
                 //DB에 회원정보 등록
                 memberMapper.InsertUser(member);
                 //ROLE 등록을 위한 객체 생성
@@ -84,7 +83,6 @@ public class SecurityService implements UserDetailsService {
         }catch(Exception e) {
             //Rollback
             e.printStackTrace();
-//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             System.out.println("회원가입 에러 발생.");
         }
     }

@@ -2,10 +2,9 @@ package Kams.Perfumance.service;
 
 import Kams.Perfumance.mapper.MemberMapper;
 import Kams.Perfumance.vo.MemberVo;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,7 +14,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     MemberMapper memberMapper;
-    Date date = new Date();
 
     public UserServiceImpl(MemberMapper memberMapper) {
         this.memberMapper = memberMapper;
@@ -23,17 +21,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<MemberVo> getAllUser() {
-
         return memberMapper.getList();
     }
 
     @Override
-    public int getUserNo(String id){
-         return memberMapper.findUserNo(id);
+    public String userDisabled(String id){ return memberMapper.updateEnabled(id); }
 
-
+    @Override
+    public ArrayList<MemberVo> getUserInfo(String id){
+        return memberMapper.findByUserId(id);
     }
 
+    @Override
+    public int checkTryCount(String id){
+        return memberMapper.addTryCount(id);
+    }
+
+    @Override
+    public int resetTryCount(String id) { return memberMapper.resetTryCount(id); }
 
 }
 

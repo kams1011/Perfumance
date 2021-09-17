@@ -17,7 +17,9 @@
         SELECT * FROM user_info WHERE id=#{id}
     </select>
 
-
+    <select id="updateEnabled" resultType="String">
+        UPDATE user_info SET enabled="false" where id=#{id}
+    </select>
 
     <insert id="userRoleSave" parameterType="map">
         INSERT INTO user_role
@@ -26,14 +28,6 @@
         (#{uno},#{rno})
     </insert>
 
-
-    <select id="findUserNo" resultType="int">
-        SELECT
-            uno
-        FROM user_info
-        WHERE id = #{id}
-    </select>
-
     <select id="findRoleNo" resultType="int">
         SELECT
             rno
@@ -41,7 +35,13 @@
         WHERE role = #{role}
     </select>
 
+    <update id="addTryCount">
+        UPDATE user_info SET tryCount=tryCount+1 WHERE id=#{id}
+    </update>
 
+    <update id="resetTryCount">
+        UPDATE user_info SET tryCount=0 WHERE id=#{id}
+    </update>
 
 
 </mapper>

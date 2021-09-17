@@ -1,5 +1,7 @@
 package Kams.Perfumance.security;
 
+import Kams.Perfumance.handler.CustomAuthenticationFailureHandler;
+import Kams.Perfumance.handler.CustomAuthenticationSuccessHandler;
 import Kams.Perfumance.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +14,8 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.sql.DataSource;
 
@@ -22,18 +26,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     private DataSource dataSource;
 
+    @Autowired
+    private CustomAuthenticationSuccessHandler successHandler;
+
+    @Autowired
+    private CustomAuthenticationFailureHandler failureHandler;
+
     @Bean //회원가입시 비밀번호 암호화.
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
-    @Bean //실제 인증을 한 이후 인증이 완료되면 Authentication객체 반환. 화면에서 입력한 로그인정보와 DB에서 가져온 사용자 정보 비교
-    public DaoAuthenticationProvider authenticationProvider(SecurityService securityService){
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(securityService);
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        return authenticationProvider;
-    }
+//    @Bean //실제 인증을 한 이후 인증이 완료되면 Authentication객체 반환. 화면에서 입력한 로그인정보와 DB에서 가져온 사용자 정보 비교
+//    public DaoAuthenticationProvider authenticationProvider(SecurityService securityService){
+//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+//        authenticationProvider.setUserDetailsService(securityService);
+//        authenticationProvider.setPasswordEncoder(passwordEncoder());
+//        return authenticationProvider;
+//    }
 
     @Override //Home 디렉토리 하위 파일 목록은 항상 통과
     public void configure(WebSecurity web) throws Exception{
@@ -42,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
 
 
-    @Override
+    @Override // HTTP 보안
     protected void configure(HttpSecurity http) throws Exception{
         http.authorizeRequests()
                 .antMatchers("/home/**","/access/**").permitAll()
@@ -56,25 +66,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .loginPage("/access/login")
                 .permitAll()
                .loginProcessingUrl("/login-process") // post로 로그인 정보를 보낼시 경로.
-                .defaultSuccessUrl("/home/main", true) //로그인 성공 이후 이동할 페이지
+                .successHandler(successHandler)
+                .failureHandler(failureHandler)
                 .and()
              .logout()
                 .permitAll();
-//                .successHandler(new CustomAuthenticationSuccessHandler("/main"))
-//                .failureUrl("login-fail");
-//                .failureHandler(new CustomAuthenticationFailureHandler("/login-fail"))
-
-
 
         http.exceptionHandling().accessDeniedPage("/accessDenied"); //에러페이지로 이동
-//        http.logout().logoutUrl("/logout").invalidateHttpSession(true);
 
     }
 
-    @Autowired
+    @Autowired //사용자 인증정보
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
         auth.jdbcAuthentication()
-                .dataSource(dataSource)
+                .dataSource(dataSource) //JDBC // application.properties에 있는 datasource를 사용하겠다.
                 .passwordEncoder(passwordEncoder())
                 .usersByUsernameQuery("select id,pwd,enabled "
                         + "from user_info "

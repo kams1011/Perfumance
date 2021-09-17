@@ -7,14 +7,18 @@ import lombok.Setter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class MemberMapperTests {
 
     @Autowired
@@ -25,30 +29,27 @@ public class MemberMapperTests {
 
 
     @Test
-    public void getListTest(){
-       System.out.println(memberMapper.getList());
-    }
+    public void mapperTest(){
+       ArrayList<MemberVo> test = memberMapper.findByUserId("kams1");
+       System.out.println(test.get(0).getEnable());
+       System.out.println(test.get(0).getTryNum());
 
+    }
 
     @Test
-    public void insertTest(){
-        MemberVo uvo = MemberVo.builder()
-                .id("122412")
-                .pwd("3")
-                .nick("3")
-                .email("3")
-                .img("3")
-                .regdt(date)
-                .deldt(date)
-                .build();
-
-        try{memberMapper.InsertUser(uvo);
-           System.out.println("인서트 성공");
-        }catch(Exception e){
-            System.out.println("인서트 에러입니다.");
-            e.printStackTrace();
-        }
+    public void addTryContTest(){
+        int result = memberMapper.addTryCount("kams1");
+        System.out.println(result);
     }
+
+    @Test
+    public void resetTest(){
+        int result = memberMapper.resetTryCount("kams1");
+        System.out.println(result);
+
+    }
+
+
 
 
 }

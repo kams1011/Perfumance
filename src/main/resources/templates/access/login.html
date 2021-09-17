@@ -8,12 +8,12 @@
 <body>
 
     <header th:insert="common/fragment.html :: header"> </header>
-    <div th:if="${param.error}">
-        Invalid username and password.
-    </div>
-    <div th:if="${param.logout}">
-        You have been logged out.
-    </div>
+<!--    <div th:if="${param.error}">-->
+<!--        Invalid username and password.-->
+<!--    </div>-->
+<!--    <div th:if="${param.logout}">-->
+<!--        You have been logged out.-->
+<!--    </div>-->
 
     <form th:action="@{/login-process}" method="post">
             <div id="mainBox">

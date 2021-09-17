@@ -3,6 +3,7 @@ package Kams.Perfumance.service;
 import Kams.Perfumance.vo.MemberVo;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -11,7 +12,13 @@ public interface UserService {
 
     public List<MemberVo> getAllUser();
 
-    public int getUserNo(String id);
+    public String userDisabled(String id);
+
+    public ArrayList<MemberVo> getUserInfo(String id);
+
+    public int checkTryCount(String id);
+
+    public int resetTryCount(String id);
 
 }
 
