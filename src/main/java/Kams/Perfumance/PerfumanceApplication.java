@@ -1,4 +1,5 @@
-package Kams.Perfumance;
+package Kams
+		.Perfumance;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;

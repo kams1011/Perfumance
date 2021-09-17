@@ -22,6 +22,11 @@ public class AccessController {
         return "access/login";
     }
 
+    @GetMapping("/denied")
+    public String denied(){
+        return "access/accessdenied";
+    }
+
     @GetMapping("/register")
     public String register(String id){
         return "access/register";

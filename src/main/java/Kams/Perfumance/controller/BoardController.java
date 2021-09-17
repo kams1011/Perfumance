@@ -26,5 +26,6 @@ public class BoardController {
         return "board/result";
     }
 
-
+    @GetMapping("goodsdetail")
+    public String goodsDetail(){ return "board/goodsdetail";}
 }

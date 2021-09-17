@@ -9,7 +9,7 @@ import java.util.Date;
 public class MemberVo {
     
     private int uno; // 인조키
-    private String enable; // 계정 활성화 여부
+    private String enabled; // 계정 활성화 여부
     private String id;
     private String pwd;
     private String nick;
@@ -23,10 +23,10 @@ public class MemberVo {
 
 
     @Builder
-    public MemberVo(int uno, String enable, String id, String pwd, String nick, String email, String img,
+    public MemberVo(int uno, String enabled, String id, String pwd, String nick, String email, String img,
                      Date regDt, Date delDt, int dealnum, int tryNum){
         this.uno = uno;
-        this.enable = enable;
+        this.enabled = enabled;
         this.id = id;
         this.pwd = pwd;
         this.nick = nick;

@@ -21,7 +21,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String id = request.getParameter("username");
-        System.out.println(id);
         userService.resetTryCount(id);
         response.sendRedirect("/home/main");
 

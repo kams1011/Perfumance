@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link th:href="@{/css/goodsdetail.css}" rel="stylesheet" />
+
+</head>
+<body>
+<header th:insert="common/fragment.html :: header"> </header>
+
+<div class="wrapper">
+  <div id="boardName">중고장터</div>
+  <div class="contentHead">판매정보</div>
+  <div id="goodsDetailBox">
+    <div id="goodsDetailPic" class="goods"></div>
+    <div id="goodsDetail" class="goods"></div>
+  </div>
+</div>
+
+<div class="wrapper">
+  <div class="contentHead">판매위치</div>
+  <div id="mapBox"></div>
+</div>-
+
+<div class="wrapper">
+  <div class="contentHead">댓글</div>
+  <div id="replyBox"></div>
+</div>
+
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=27ea90f061ba8e5959bf610c7ba95b02&libraries=services"></script>
+
+<script>
+  var mapContainer = document.getElementById('mapBox'), // 지도를 표시할 div
+          mapOption = {
+            center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+            draggable: false,
+            // draggable: false, // 지도를 생성할때 지도 이동 및 확대/축소를 막으려면 draggable: false 옵션을 추가하세요
+            level: 3 // 지도의 확대 레벨
+          };
+
+  var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+
+</script>
+
+<footer th:insert="common/fragment.html :: footer"> </footer>
+
+</body>
+</html>

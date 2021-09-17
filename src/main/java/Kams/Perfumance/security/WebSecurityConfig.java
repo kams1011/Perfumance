@@ -72,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
              .logout()
                 .permitAll();
 
-        http.exceptionHandling().accessDeniedPage("/accessDenied"); //에러페이지로 이동
+        http.exceptionHandling().accessDeniedPage("/denied"); //에러페이지로 이동
 
     }
 

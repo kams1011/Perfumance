@@ -58,7 +58,7 @@ public class SecurityService implements UserDetailsService {
                 // 비밀번호 암호화
                 String encodePassword = bCryptPasswordEncoder.encode(pwd);
                 MemberVo member = MemberVo.builder()
-                        .enable("true")
+                        .enabled("true")
                         .id(id)
                         .pwd(encodePassword)
                         .nick(nick)
