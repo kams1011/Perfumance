@@ -16,6 +16,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.sql.DataSource;
 
@@ -50,12 +53,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         web.ignoring().antMatchers("/css/**");
     }
 
-
-
     @Override // HTTP 보안
     protected void configure(HttpSecurity http) throws Exception{
-        http.authorizeRequests()
+        http
+                .authorizeRequests()
                 .antMatchers("/home/**","/access/**").permitAll()
+                .antMatchers("https://dapi.kakao.com/v2/local/search/**").permitAll()
                 .and()
              .authorizeRequests()
                 .antMatchers("/board/**","/user/**").hasRole("USER")
@@ -89,8 +92,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                         + "inner join role r on ur.rno = r.rno "
                         + "where ui.id = ?");
     }
-
-
 
 
 }

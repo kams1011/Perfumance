@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <link th:href="@{/css/post.css}" rel="stylesheet" />
+
+</head>
+<body>
+<header th:insert="common/fragment.html :: header"> </header>
+
+<div class="wrapper">
+    <div id="boardName">글쓰기</div>
+    <div class="contentHead">판매글 작성</div>
+    <textarea id="postTitle" placeholder="제목"></textarea>
+    <div id="postBox">
+        <textarea id="postContent" placeholder="내용"></textarea>
+    </div>
+</div>
+
+<!--<div class="wrapper">-->
+<div class="wrapper">
+    <div class="contentHead">판매위치</div>
+</div>
+<div class="map_wrap">
+    <div id="mapBox"></div>
+    <div id="menu_wrap" class="bg_white">
+        <div class="option">
+            <div><form onsubmit="search(); return false;">
+                주소검색 : <input type="text" value="이태원 맛집" id="keyword" size="15">
+                <button type="submit">검색하기</button>
+            </form>
+            </div>
+        </div>
+        <hr>
+        <ul id="placesList"></ul>
+        <div id="pagination"></div>
+    </div>
+</div>
+<!--</div>-->
+
+<div>
+    <button>작성하기</button> <button>취소</button>
+</div>
+
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=27ea90f061ba8e5959bf610c7ba95b02&libraries=services"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+function search(){
+    let test = document.getElementById('keyword').value;
+    alert(test);
+
+    $.ajax({
+        url:'https://dapi.kakao.com/v2/local/search/address.json?query='+encodeURIComponent(test),
+        type:'get',
+        headers: {'Authorization' : 'KakaoAK 94f2db33b4ac4719da6277bc7140576a'},
+        success:function(data){
+            console.log(data.documents[0].address);
+            console.log(data.documents[0].address["address_name"]);
+        },
+        error : function(e){
+            console.log(e);
+        }
+    });
+}
+
+
+</script>
+
+<footer th:insert="common/fragment.html :: footer"> </footer>
+
+</body>
+</html>

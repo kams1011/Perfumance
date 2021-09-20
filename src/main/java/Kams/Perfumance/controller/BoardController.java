@@ -12,9 +12,7 @@ public class BoardController {
 
 
     @GetMapping("market")
-    public String market(){
-        return "board/market";
-    }
+    public String market(){ return "board/market"; }
 
     @GetMapping("details")
     public String details(){
@@ -27,5 +25,8 @@ public class BoardController {
     }
 
     @GetMapping("goodsdetail")
-    public String goodsDetail(){ return "board/goodsdetail";}
+    public String goodsDetail(){ return "board/goodsdetail"; }
+
+    @GetMapping("post")
+    public String post(){ return "board/post"; }
 }
