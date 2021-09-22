@@ -30,7 +30,7 @@
     <div id="menu_wrap" class="bg_white">
         <div class="option">
             <div><form onsubmit="detailSearch(); return false;">
-                주소검색 : <input type="text" value="이태원 맛집" id="keyword" size="15">
+                주소검색 : <input type="text" placeholder="주소를 입력해주세요" id="keyword" size="15">
                 <button type="submit">검색하기</button>
             </form>
             </div>
@@ -55,7 +55,7 @@
 
     var mapContainer = document.getElementById('mapBox'), // 지도를 표시할 div
         mapOption = {
-            center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+            center: new kakao.maps.LatLng(33.335887, 126.584063), // 지도의 중심좌표
             level: 3 // 지도의 확대 레벨
         };
 
@@ -159,19 +159,19 @@
         if(places.place_name) {
             var el = document.createElement('li'),
                 itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' +
-                    '<div class="info">' +
+                    '<div class="info" id="' + (index) + '" onclick=findAddress("' + (index) + '")>' +
                     '   <h5>' + places.place_name + '</h5>';
         } else {
             var el = document.createElement('li'),
                 itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' +
-                    '<div class="info">' +
+                    '<div class="info" id="' + (index) + '" onclick=findAddress("' + (index) + '")>' +
                     '   <h5>' + '건물이름없음' + '</h5>';
         }
         if (places.road_address_name) {
-            itemStr += '    <span>' + places.road_address_name + '</span>' +
-                '   <span class="jibun gray">' +  places.address_name  + '</span>';
+            itemStr += '    <span class="address">' + places.road_address_name + '</span>' +
+                '   <span class="jibun gray" class="address">' +  places.address_name  + '</span>';
         } else {
-            itemStr += '    <span>' +  places.address_name  + '</span>';
+            itemStr += '    <span class="address">' +  places.address_name  + '</span>';
         }
 
         if (places.phone){
@@ -229,12 +229,14 @@
 
         for (i=1; i<=pagination.last; i++) {
             var el = document.createElement('a');
-            el.href = "#";
+            // el.href = "#";
             el.innerHTML = i;
 
             if (i===pagination.current) {
                 el.className = 'on';
             } else {
+                el.style.cursor="pointer";
+                //속도에 영향을 줄 수 있으니 가능하면 css로
                 el.onclick = (function(i) {
                     return function() {
                         pagination.gotoPage(i);
@@ -322,7 +324,7 @@
                         itemEl.onmouseout =  function () {
                             infowindow.close();
                         };
-                    })(marker, result[i].place_name);
+                    })(marker, '건물이름없음');
 
                     fragment.appendChild(itemEl);
                 }
@@ -345,6 +347,22 @@
         });
 
     }
+
+    function findAddress(index){
+
+        let address = document.getElementsByClassName("address");
+
+
+        geocoder.addressSearch(address[index].innerHTML, function(result) {
+
+                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                map.setCenter(coords);
+        });
+
+
+    }
+
 </script>
 
 <footer th:insert="common/fragment.html :: footer"> </footer>
