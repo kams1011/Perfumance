@@ -16,7 +16,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/home")
 public class HomeController {
-    //Restcontroller로 하면 String만 반환되는 이유??
+
 
     private final UserServiceImpl userService;
     private final SecurityService sService;
