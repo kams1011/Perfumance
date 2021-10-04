@@ -9,12 +9,16 @@
     </select>
 
     <insert id="InsertUser" useGeneratedKeys="true" keyProperty="uno">
-        INSERT INTO user_info(id,pwd,nick,email,regdt)
-        VALUE (#{id},#{pwd},#{nick},#{email},#{regdt})
+        INSERT INTO user_info(enabled, id, pwd, nick, email, img, regDt, delDt, dealNum, tryCount)
+        VALUE (#{enabled},#{id},#{pwd},#{nick},#{email},#{img},#{regDt},#{delDt},#{dealNum},#{tryCount})
     </insert>
 
     <select id="findByUserId" resultType="Kams.Perfumance.vo.MemberVo">
         SELECT * FROM user_info WHERE id=#{id}
+    </select>
+
+    <select id="findUserNo" resultType="Integer">
+        SELECT uno FROM user_info WHERE id=#{id}
     </select>
 
     <select id="updateEnabled" resultType="String">

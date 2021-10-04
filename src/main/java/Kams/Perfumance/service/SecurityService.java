@@ -49,7 +49,6 @@ public class SecurityService implements UserDetailsService {
     public void SignUp(@Param("id") String id, @Param("pwd") String pwd, @Param("nick") String nick, @Param("email") String email) {
         try {
             Integer m = memberMapper.findUserNo(id);
-
             // 이미 유저가 존재할 때
             if (m != null) {
                 System.out.println(m);
@@ -66,8 +65,8 @@ public class SecurityService implements UserDetailsService {
                         .img("baseImg")
                         .regDt(date)
                         .delDt(null)
-                        .dealnum(0)
-                        .tryNum(0).build();
+                        .dealNum(0)
+                        .tryCount(0).build();
                 //DB에 회원정보 등록
                 memberMapper.InsertUser(member);
                 //ROLE 등록을 위한 객체 생성

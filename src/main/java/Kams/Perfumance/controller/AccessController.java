@@ -47,7 +47,7 @@ public class AccessController {
         return "home/main";
     }
 
-//    Post매핑으로 변경
+
 
 
 }

@@ -17,34 +17,35 @@
     <div id="boardName">글쓰기</div>
     <div class="contentHead">판매글 작성</div>
     <div id="requiredBox">
-
-        <label>제품이름</label>     <input type="text" class="option"> <br>
+        <form th:action="@{/board/posting}" method="post" enctype="multipart/form-data" onsubmit="initHidden();">
+        <label>제품이름</label>     <input type="text" class="option" name="goodsName"> <br>
         <label>제조사</label>
-        <select class="option">
+        <select class="option" name="manufacturer">
             <option>구찌</option>
             <option>프라다</option>
             <option>딥디크</option>
             <option>샤넬</option>
             <option>기타</option>
         </select><br>
-        <label>잔여용량</label>     <input type="text" class="option"><br>
-        <label>유통기한</label>     <input type="date" class="option"><br>
+        <label>잔여용량</label>     <input type="number" class="option" name="useableCapacity"><br>
+        <label>유통기한</label>     <input type="date" class="option" name="expiryDate"><br>
         <label>판매방법</label>
-        <select class="option">
+        <select class="option" name="contact">
             <option>대면</option>
             <option>비대면</option>
         </select> <br>
-        <label>판매가</label>       <input type="text" class="option"> <br>
+        <label>판매가</label>       <input type="text" class="option" name="price"> <br>
 
 
-        <form th:action="@{/upload/uploadFormAction}" method="post" enctype="multipart/form-data">
+
         <label>파일첨부</label>
-            <input type="file" id="uploadFile" class="option" multiple="multiple" accept="image/*" onchange=showTextFile()>
+            <input type="file" id="uploadFile" name="uploadFile" class="option" multiple="multiple" accept="image/*">
     </div>
 
     <textarea id="postTitle" placeholder="제목"></textarea>
     <div id="postBox">
         <div id="summernote"></div>
+        <input name="explanation" type="hidden">
     </div>
 </div>
 
@@ -71,7 +72,7 @@
 <div>
 
     <button type="button">취소</button>
-    <input type="submit" value="제출">
+    <input type="submit" value="작성하기" id="formSubmit">
     </form>
 </div>
 
@@ -104,6 +105,18 @@
         });
     });
 
+    let hiddenText = document.getElementsByName("explanation");
+    let summernoteText = document.getElementsByClassName("note-editable");
+
+    function initHidden(){
+       hiddenText[0].value = summernoteText[0].innerHTML;
+    }
+
+
+
+
+
+
     let inputUpload = document.getElementById("uploadFile");
 
     function showTextFile() {
@@ -120,10 +133,6 @@
             }
         }
     }
-
-
-    // inputUpload.addEventListener('change', showTextFile);
-
     let fileTypes = ['image/gif', 'image/jpg', 'image/jpeg', 'image/png', 'image/bmp' ,'image/ico', 'image/apng'];
 
     function validFileType(file) {

@@ -25,7 +25,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         String id=request.getParameter("username");
         ArrayList<MemberVo> loginUser=userService.getUserInfo(id);
-        int tryNum = loginUser.get(0).getTryNum();
+        int tryNum = loginUser.get(0).getTryCount();
         String enabled = loginUser.get(0).getEnabled();
 
         if(enabled.equals("true")){

@@ -31,8 +31,7 @@ public class MemberMapperTests {
     @Test
     public void mapperTest(){
        ArrayList<MemberVo> test = memberMapper.findByUserId("kams1");
-       System.out.println(test.get(0).getEnable());
-       System.out.println(test.get(0).getTryNum());
+       System.out.println(test.get(0).getTryCount());
 
     }
 

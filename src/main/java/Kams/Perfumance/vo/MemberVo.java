@@ -17,14 +17,14 @@ public class MemberVo {
     private String img;  //프로필사진
     private Date regDt;  //가입일자
     private Date delDt;  //탈퇴일자
-    private int dealnum;  //거래횟수
-    private int tryNum;
+    private int dealNum;  //거래횟수
+    private int tryCount; //로그인시도횟수
     
 
 
     @Builder
     public MemberVo(int uno, String enabled, String id, String pwd, String nick, String email, String img,
-                     Date regDt, Date delDt, int dealnum, int tryNum){
+                     Date regDt, Date delDt, int dealNum, int tryCount){
         this.uno = uno;
         this.enabled = enabled;
         this.id = id;
@@ -34,8 +34,8 @@ public class MemberVo {
         this.img = img;
         this.regDt = regDt;
         this.delDt = delDt;
-        this.dealnum = dealnum;
-        this.tryNum = tryNum;
+        this.dealNum = dealNum;
+        this.tryCount = tryCount;
     }
     //Builder에서 생성자가 @Builder.Default보다 우선한다.
 

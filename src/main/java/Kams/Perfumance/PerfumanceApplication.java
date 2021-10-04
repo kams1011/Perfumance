@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan(basePackageClasses = PerfumanceApplication.class)
 public class PerfumanceApplication {
 
+
 	public static void main(String[] args) {
 		SpringApplication.run(PerfumanceApplication.class, args);
 	}

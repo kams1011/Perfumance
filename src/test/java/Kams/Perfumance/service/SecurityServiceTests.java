@@ -28,7 +28,7 @@ public class SecurityServiceTests {
     public void signUpTest(){
         String pwd = bCryptPasswordEncoder.encode("2");
         MemberVo memberVo = MemberVo.builder()
-                .id("1")
+                .id("mapperTEst")
                 .pwd(pwd)
                 .email("3")
                 .nick("4")

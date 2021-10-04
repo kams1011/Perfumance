@@ -26,7 +26,7 @@ public interface MemberMapper {
     //유저 권한 저장
     int userRoleSave(@Param("uno") int uno, @Param("rno") int rno);
 
-    //유저 FK번호 알아내기
+    //유저 PK번호 알아내기
     Integer findUserNo(String id);
 
     //권한 FK번호 알아내기
