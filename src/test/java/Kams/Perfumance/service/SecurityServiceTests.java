@@ -36,6 +36,11 @@ public class SecurityServiceTests {
         securityService.SignUp(memberVo.getId(), memberVo.getPwd(), memberVo.getNick(), memberVo.getEmail());
     }
 
+    @Test
+    public void commitTEst(){
+        System.out.println("커밋테스트입니다.");
+    }
+
 
 
 
