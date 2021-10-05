@@ -49,64 +49,66 @@ public class BoardController {
 
     @PostMapping("posting")
     public String uploadForm(@RequestPart("uploadFile") MultipartFile[] uploadFile, Principal principal, String goodsName, String manufacturer,
-                             String expiryDate, String price, String contact, String address, String useableCapacity, String explanation){
+                             String expiryDt, String price, String contact, String address, String usableCapacity, String explanation){
 
-            Date date = new Date();
-
+        Date date = new Date();
         boolean isContact; //대면 여부 체크 변수
         int intPrice = Integer.parseInt(price);
-        int intCapacity = Integer.parseInt(useableCapacity);
+        int intCapacity = Integer.parseInt(usableCapacity);
+
         if(!contact.equals("대면")){
             isContact=false;  //비대면이다.
         }else{
             isContact=true;  //대면이다.
         }
 
-
-
         GoodsVO goodsVO = GoodsVO.builder()
                 .id(principal.getName())
                 .goodsName(goodsName)
                 .manufacturer(manufacturer)
-                .expiryDate(expiryDate)
+                .expiryDt(expiryDt)
                 .price(intPrice)
                 .contact(isContact)
                 .address(address)
-                .useableCapacity(intCapacity)
+                .usableCapacity(intCapacity)
                 .explanation(explanation)
                 .status("판매중")
                 .writeDt(date)
                 .modifyDt(null)
                 .picture("기본이미지")
-                .thumbnail("기본썸네일").build();
+                .build();
+        try{
+            marketService.goodsPosting(goodsVO);
+            //이하 사진업로드
+            String uploadFolder = "c:\\upload";
+            File uploadPath = new File(uploadFolder, getFolder()); //uploadFolder에 getFolder의 리턴값을 객체로 생성한다.
+            if(!uploadPath.exists()) {
+                uploadPath.mkdirs();
+            } //존재하지 않은 부모 폴더까지 포함하여 해당 경로에 폴더를 만든다.
 
-        marketService.goodsPosting();
-        //이하 사진업로드
-        String uploadFolder = "c:\\upload";
-        File uploadPath = new File(uploadFolder, getFolder()); //uploadFolder에 getFolder의 리턴값을 객체로 생성한다.
-        if(!uploadPath.exists()) {
-            uploadPath.mkdirs();
-        } //존재하지 않은 부모 폴더까지 포함하여 해당 경로에 폴더를 만든다.
+            for (MultipartFile multipartFile : uploadFile){
+                String uploadFileName = multipartFile.getOriginalFilename();
+                uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\")+1);
+                UUID uuid = UUID.randomUUID();
+                uploadFileName = uuid.toString() + "_" + uploadFileName;
 
-        for (MultipartFile multipartFile : uploadFile){
-            String uploadFileName = multipartFile.getOriginalFilename();
-            uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\")+1);
-            UUID uuid = UUID.randomUUID();
-            uploadFileName = uuid.toString() + "_" + uploadFileName;
+                try{
+                    File saveFile = new File(uploadPath, uploadFileName); //uploadPath에 uploadFileName 객체를 생성한다.
+                    multipartFile.transferTo(saveFile);
+                    FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_" + uploadFileName));
+                    //파일을 출력해준다.
+                    Thumbnailator.createThumbnail(new FileInputStream(saveFile.getAbsolutePath()), thumbnail, 100, 100);
 
-            try{
-                File saveFile = new File(uploadPath, uploadFileName); //uploadPath에 uploadFileName 객체를 생성한다.
-                multipartFile.transferTo(saveFile);
-                FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_" + uploadFileName));
-                //파일을 출력해준다.
-                Thumbnailator.createThumbnail(new FileInputStream(saveFile.getAbsolutePath()), thumbnail, 100, 100);
-
-                thumbnail.close();
-                //Image IO로도 만들어보기.
-            } catch (Exception e){
-                e.printStackTrace();
+                    thumbnail.close();
+                    //Image IO로도 만들어보기.
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
             }
+        }catch(Exception e){
+            e.printStackTrace();
         }
+
 
         return "/board/post";
 

@@ -4,8 +4,10 @@
 
 <mapper namespace="Kams.Perfumance.mapper.MarketMapper">
 
-<!--    <insert>-->
-<!--        insert into goods value-->
-<!--    </insert>-->
+    <insert id="postRegister" useGeneratedKeys="true" keyProperty="gno">
+        INSERT INTO goods(id, goodsName, manufacturer, expiryDt, price, contact, address, usableCapacity, explanation, status, writeDt, modifyDt, picture)
+        VALUE (#{id}, #{goodsName}, #{manufacturer}, #{expiryDt}, #{price}, #{contact}, #{address}, #{usableCapacity}, #{explanation}, #{status}, #{writeDt}, #{modifyDt}, #{picture})
+    </insert>
 
 </mapper>
+
