@@ -3,6 +3,7 @@ package Kams.Perfumance.service;
 
 import Kams.Perfumance.mapper.MarketMapper;
 import Kams.Perfumance.mapper.MemberMapper;
+import Kams.Perfumance.vo.FileVO;
 import Kams.Perfumance.vo.GoodsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,13 @@ public class MarketServiceImpl implements MarketService {
     }
 
     @Override
-    public void goodsPosting(GoodsVO goodsVO) {
-        marketMapper.postRegister(goodsVO);
-    };
+    public int goodsPosting(GoodsVO goodsVO) {
+        return marketMapper.goodsRegister(goodsVO);
+    }
 
+
+    @Override
+    public void fileSave(FileVO fileVO) {
+        marketMapper.fileInfoInsert(fileVO);
+    }
 }
