@@ -5,8 +5,8 @@
 <mapper namespace="Kams.Perfumance.mapper.MarketMapper">
 
     <insert id="goodsRegister" useGeneratedKeys="true" keyProperty="gno">
-        INSERT INTO goods(id, goodsName, manufacturer, expiryDt, price, contact, address, usableCapacity, explanation, status, writeDt, modifyDt)
-        VALUE (#{id}, #{goodsName}, #{manufacturer}, #{expiryDt}, #{price}, #{contact}, #{address}, #{usableCapacity}, #{explanation}, #{status}, #{writeDt}, #{modifyDt})
+        INSERT INTO goods(id, goodsName, manufacturer, expiryDt, price, contact, address, usableCapacity, title, explanation, status, writeDt, modifyDt)
+        VALUE (#{id}, #{goodsName}, #{manufacturer}, #{expiryDt}, #{price}, #{contact}, #{address}, #{usableCapacity}, #{title}, #{explanation}, #{status}, #{writeDt}, #{modifyDt})
     </insert>
 
     <insert id="fileInfoInsert" useGeneratedKeys="true" keyProperty="fno">

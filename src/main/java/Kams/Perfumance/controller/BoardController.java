@@ -49,8 +49,8 @@ public class BoardController {
     public String post(){ return "board/post"; }
 
     @PostMapping("posting")
-    public String uploadForm(@RequestPart("uploadFile") MultipartFile[] uploadFile, Principal principal, String title, String goodsName,
-                             String manufacturer, String expiryDt, String price, String contact, String address, String usableCapacity, String explanation){
+    public String uploadForm(@RequestPart("uploadFile") MultipartFile[] uploadFile, Principal principal, String goodsName, String manufacturer,
+                             String expiryDt, String price, String contact, String address, String usableCapacity, String title, String explanation){
 
         Date date = new Date();
         boolean isContact; //대면 여부 체크 변수
