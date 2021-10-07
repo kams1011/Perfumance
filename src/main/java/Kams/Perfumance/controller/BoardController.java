@@ -49,13 +49,20 @@ public class BoardController {
     public String post(){ return "board/post"; }
 
     @PostMapping("posting")
-    public String uploadForm(@RequestPart("uploadFile") MultipartFile[] uploadFile, Principal principal, String goodsName, String manufacturer,
+    public String uploadForm(@RequestPart("uploadFile") MultipartFile[] uploadFile, Principal principal, String goodsName, String[] manufacturer,
                              String expiryDt, String price, String contact, String address, String usableCapacity, String title, String explanation){
-
         Date date = new Date();
         boolean isContact; //대면 여부 체크 변수
         int intPrice = Integer.parseInt(price);
         int intCapacity = Integer.parseInt(usableCapacity);
+        String validManufact;  //배열로 오는 제조사 유효성검사 변수
+        
+        if(manufacturer[0].equals("기타")){
+            validManufact=manufacturer[1];
+        }else{
+            validManufact=manufacturer[0];
+        }
+
 
 
         if(!contact.equals("대면")){
@@ -71,7 +78,7 @@ public class BoardController {
                  .id(principal.getName())
                  .title(title)
                  .goodsName(goodsName)
-                 .manufacturer(manufacturer)
+                 .manufacturer(validManufact)
                  .expiryDt(expiryDt)
                  .price(intPrice)
                  .contact(isContact)

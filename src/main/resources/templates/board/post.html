@@ -18,16 +18,21 @@
     <div class="contentHead">판매글 작성</div>
     <div id="requiredBox">
         <form th:action="@{/board/posting}" method="post" enctype="multipart/form-data" onsubmit="initHidden();">
-        <label>제품이름</label>     <input type="text" class="option" name="goodsName"> <br>
+        <label>제품이름</label>     <input type="text" class="option inputText" name="goodsName" onkeyup="notSpecialWord()"> <br>
         <label>제조사</label>
-        <select class="option" name="manufacturer">
+        <select class="option" name="manufacturer" id="manufacturer" onchange="showMaker()">
             <option>구찌</option>
             <option>프라다</option>
             <option>딥디크</option>
             <option>샤넬</option>
             <option>기타</option>
-        </select><br>
-        <label>잔여용량</label>     <input type="number" class="option" name="usableCapacity"><br>
+        </select>
+            <input type="text" name="manufacturer" id="etc" class="hiddenDisplay inputText" placeholder="제조사를 입력해주세요." onkeyup="notSpecialWord()">
+            <br>
+        <label>잔여용량</label>     <input type="number" class="option" name="usableCapacity" id="usableCapacity" onkeyup="onlyNumberFunc()">
+            <label name="unit">ml</label>
+            <button type="button" onclick="transform()">단위변환</button>
+            <br>
         <label>유통기한</label>     <input type="date" class="option" name="expiryDt"><br>
         <label>판매방법</label>
         <select class="option" name="contact" onchange="showMap()">
@@ -60,6 +65,7 @@
             <div>
                 주소검색 : <input type="text" placeholder="주소를 입력해주세요" id="keyword" size="15">
                 <button type="button" onclick="detailSearch()">검색하기</button>
+                <input type="hidden" name="address">
             </div>
         </div>
         <hr>
@@ -109,14 +115,61 @@
                 e.preventDefault();
         }) //엔터키누르면 저절로 submit되는거 막기.
 
-
     });
 
     let hiddenText = document.getElementsByName("explanation");
     let summernoteText = document.getElementsByClassName("note-editable");
+    let usableCapacity = document.getElementById("usableCapacity");
+    let unit = document.getElementsByName("unit");
+    let maker = document.getElementById("manufacturer");
 
     function initHidden(){
        hiddenText[0].value = summernoteText[0].innerHTML;
+    }
+
+    function transform() {
+        if(unit[0].innerHTML =='ml') {
+            unit[0].innerHTML ='oz';
+            usableCapacity.value = usableCapacity.value / 29.574
+        }else if(unit[0].innerHTML == 'oz'){
+            unit[0].innerHTML ='ml';
+            usableCapacity.value = usableCapacity.value * 29.574
+        }
+    }
+    // function CapacityCheck(){
+    //     if(usableCapacity.value>100000){
+    //         alert("정확한 용량을 기입해주세요. 단위는 ml 또는 oz입니다.");
+    //         return false;
+    //     }
+    // }
+
+    // 제품이름 체크, 제조사 체크, 판매가 체크.
+    const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/;
+
+    function notSpecialWord(){
+        const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/;
+        let t = document.getElementsByClassName("inputText");
+        if(!regex.test(t)){
+            t.replace(t.value,'');
+            alert("특수문자는 입력하실 수 없습니다.");
+        }
+    }
+
+    function onlyNumberFunc(t){
+        var regExp = /[^0-9]/gi;
+        t.onkeyup = function(e){
+            var v = this.value;
+            this.value = v.replace(regExp,'');
+        }
+    }
+
+    function showMaker(){
+        let etc=document.getElementById('etc');
+        if(maker.value=='기타'){
+            etc.className=''
+        }else{
+            etc.className = 'hiddenDisplay'
+        }
     }
 
     function showMap(){  //대면일때만 지도 표시하기.
@@ -128,8 +181,11 @@
         }
     }
 
-
-
+    if($('div.item').hasClass("choice") === false){
+        $(this).attr('class', ' choice');}
+        // $('item').className -= ' choice';
+        //  } else { // class가 존재함
+        // } // class가 존재하지않음
 
 
 
@@ -275,12 +331,12 @@
         if(places.place_name) {
             var el = document.createElement('li'),
                 itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' +
-                    '<div class="info" id="' + (index) + '" onclick=findAddress("' + (index) + '")>' +
+                    '<div class="info click" id="' + (index) + '" onclick=findAddress("' + (index) + '")>' +
                     '   <h5>' + places.place_name + '</h5>';
         } else {
             var el = document.createElement('li'),
                 itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' +
-                    '<div class="info" id="' + (index) + '" onclick=findAddress("' + (index) + '")>' +
+                    '<div class="info click" id="' + (index) + '" onclick=findAddress("' + (index) + '")>' +
                     '   <h5>' + '건물이름없음' + '</h5>';
         }
         if (places.road_address_name) {
@@ -467,7 +523,7 @@
     function findAddress(index){
 
         let address = document.getElementsByClassName("address");
-
+        let hiddenAddress=document.getElementsByName('address');
 
         geocoder.addressSearch(address[index].innerHTML, function(result) {
 
@@ -476,7 +532,8 @@
                 map.setCenter(coords);
         });
 
-
+        hiddenAddress[0].value=address[index].innerHTML;
+        alert(hiddenAddress[0].value);
     }
 
 
