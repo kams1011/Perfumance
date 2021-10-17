@@ -1,0 +1,37 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Kams.Perfumance.mapper.BoardMapper">
+
+
+    <select id="selectBoardList" parameterType="Kams.Perfumance.vo.Criteria" resultType="Kams.Perfumance.vo.PerfumeVO">
+        SELECT
+        *
+        FROM
+        perfume
+        LIMIT
+        #{startPage}, #{recordsPerPage}
+    </select>
+
+    <select id="selectBoardTotalCount" parameterType="Kams.Perfumance.vo.Criteria" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            perfume
+    </select>
+
+
+    <select id="perfumeInfo" resultType="Kams.Perfumance.vo.PerfumeVO">
+        select
+            *
+        from
+            perfume
+        where
+            name=#{perfumeName}
+    </select>
+
+
+
+
+</mapper>

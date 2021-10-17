@@ -17,9 +17,12 @@
     <div id="boardName">글쓰기</div>
     <div class="contentHead">판매글 작성</div>
     <div id="requiredBox">
-        <form th:action="@{/board/posting}" method="post" enctype="multipart/form-data" onsubmit="initHidden();">
-        <label>제품이름</label>     <input type="text" class="option inputText" name="goodsName" onkeyup="notSpecialWord()"> <br>
-        <label>제조사</label>
+        <form th:action="@{/board/posting}" method="post" enctype="multipart/form-data" onsubmit="return initHidden()">
+        <div class="formOption"><label>제품이름<br>
+            <input type="text" class="option inputText" id="goodsName" name="goodsName" pattern="[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|\*]+$" required></label>
+        </div>
+        <div class="formOption">
+        <label>제조사<br>
         <select class="option" name="manufacturer" id="manufacturer" onchange="showMaker()">
             <option>구찌</option>
             <option>프라다</option>
@@ -27,36 +30,35 @@
             <option>샤넬</option>
             <option>기타</option>
         </select>
-            <input type="text" name="manufacturer" id="etc" class="hiddenDisplay inputText" placeholder="제조사를 입력해주세요." onkeyup="notSpecialWord()">
-            <br>
-        <label>잔여용량</label>     <input type="number" class="option" name="usableCapacity" id="usableCapacity" onkeyup="onlyNumberFunc()">
-            <label name="unit">ml</label>
-            <button type="button" onclick="transform()">단위변환</button>
-            <br>
-        <label>유통기한</label>     <input type="date" class="option" name="expiryDt"><br>
-        <label>판매방법</label>
+            <input type="text" name="manufacturer" id="etc" class="hiddenDisplay inputText" placeholder="제조사를 입력해주세요." pattern="[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|\*]+$">
+        </label><br>
+            </div>
+            <div class="formOption"><label>잔여용량</label> <br> <input type="number" class="option" name="usableCapacity" id="usableCapacity" pattern="\d*" required></div>
+            <div class="formOption"><label name="unit">ml</label> <button type="button" onclick="transform()">단위변환</button> <br></div>
+            <div class="formOption"><label>유통기한</label> <br><input type="date" class="option" name="expiryDt" required><br></div>
+            <div class="formOption"> <label>판매방법</label> <br>
         <select class="option" name="contact" onchange="showMap()">
             <option>대면</option>
             <option>비대면</option>
-        </select> <br>
-        <label>판매가</label>       <input type="text" class="option" name="price"> <br>
-
-
-
-        <label>파일첨부</label>
-            <input type="file" id="uploadFile" name="uploadFile" class="option" multiple="multiple" accept="image/*">
+        </select> <br></div>
+            <div class="formOption"><label>판매가</label> <br>  <input type="text" class="option" name="price" pattern="\d*" maxlength="5" required> <br></div>
+            <div class="formOption"><label>파일첨부</label><br>
+                <input type="file" id="uploadFile" name="uploadFile" class="option" multiple="multiple" accept="image/*" onchange="setThumbnail(event);"></div><br>
+            <div id="">이미지 미리보기</div>
+           <div id="imageContainer"></div>
     </div>
-
-    <input type="text" id="postTitle" placeholder="제목" name="title">
+    <div class="contentHead">판매글 내용</div>
+    <input type="text" id="postTitle" placeholder="제목을 입력해주세요." name="title">
     <div id="postBox">
         <div id="summernote"></div>
         <input name="explanation" type="hidden">
     </div>
 </div>
 
-<div id="forHiddenDiv">
+<div id="forHiddenDiv" style="margin-bottom: 50px">
 <div class="wrapper">
     <div class="contentHead">판매위치</div>
+    <div id="addressResult">선택 주소</div>
 </div>
 <div class="map_wrap">
     <div id="mapBox"></div>
@@ -77,8 +79,8 @@
 
 <div>
 
-    <button type="button">취소</button>
-    <input type="submit" value="작성하기" id="formSubmit">
+    <button type="button" class="bottomButton">취소</button>
+    <input type="submit" value="작성하기" id="formSubmit" class="bottomButton">
     </form>
 </div>
 
@@ -115,17 +117,73 @@
                 e.preventDefault();
         }) //엔터키누르면 저절로 submit되는거 막기.
 
+        toolbar[0].style.display="none";
+
+
     });
+
 
     let hiddenText = document.getElementsByName("explanation");
     let summernoteText = document.getElementsByClassName("note-editable");
     let usableCapacity = document.getElementById("usableCapacity");
     let unit = document.getElementsByName("unit");
     let maker = document.getElementById("manufacturer");
+    let etc=document.getElementById('etc');
+    let goodsName = document.getElementById("goodsName");
+    let choiceOnOff = 'off';
+    let addressResult = document.getElementById("addressResult");
+    let inputUpload = document.getElementById("uploadFile");
 
     function initHidden(){
-       hiddenText[0].value = summernoteText[0].innerHTML;
+       if(addressResult.innerText==='선택 주소'){
+           alert("대면 거래시 주소를 입력해야합니다.");
+           return false;
+       }else{
+           hiddenText[0].value = summernoteText[0].innerHTML;
+           return true;
+       }
     }
+
+
+    function  setThumbnail(event){
+        let index = 0;
+        let files = document.getElementById("uploadFile");
+        if(files.files.length>6){
+            alert("파일 갯수는 5개를 초과할 수 없습니다.");
+            files.value="";
+        }
+
+
+        if($('#imageContainer').childElementCount!=0){
+        $('#imageContainer').empty();
+        }
+        for (let image of event.target.files){
+            let reader = new FileReader();
+            reader.onload = function (event){
+                var img = document.createElement("img");
+                img.style.width='100px';
+                img.style.height='100px';
+                img.style.border='1px solid gray';
+                img.style.padding='10px';
+                img.style.margin='10px';
+                img.className=index;
+                img.addEventListener("click", function () {
+                    this.remove();
+                    $('#imageContainer').empty(this);
+                });
+                img.setAttribute("src", event.target.result);
+                index++;
+                document.querySelector("div#imageContainer").appendChild(img);
+            };
+            reader.readAsDataURL(image);
+        }
+    }
+
+
+    function deleteIma(event){
+        event.target
+    }
+
 
     function transform() {
         if(unit[0].innerHTML =='ml') {
@@ -136,37 +194,41 @@
             usableCapacity.value = usableCapacity.value * 29.574
         }
     }
-    // function CapacityCheck(){
-    //     if(usableCapacity.value>100000){
-    //         alert("정확한 용량을 기입해주세요. 단위는 ml 또는 oz입니다.");
-    //         return false;
+
+
+    goodsName.addEventListener("input", function () {
+        if (goodsName.validity.patternMismatch) {
+            goodsName.setCustomValidity("특수문자는 입력하실 수 없습니다.");
+        }else{
+            goodsName.setCustomValidity("");
+        }
+    });
+
+    etc.addEventListener("input", function () {
+        if (etc.validity.patternMismatch) {
+            etc.setCustomValidity("특수문자는 입력하실 수 없습니다.");
+        } else {
+            etc.setCustomValidity("");
+        }
+    });  //두개 합칠 수 있나?
+
+
+    // function onlyNumberFunc(t){
+    //     number.inner
+    //
+    //     let number = document.getElementById("usableCapacity");
+    //     var regExp = /[^0-9]/gi;
+    //     t.onkeyup = function(e){
+    //         var v = this.value;
+    //         this.value = v.replace(regExp,'');
+    //         alert('숫자만 입력 가능합니다.');
     //     }
+    //
     // }
 
-    // 제품이름 체크, 제조사 체크, 판매가 체크.
-    const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/;
-
-    function notSpecialWord(){
-        const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/;
-        let t = document.getElementsByClassName("inputText");
-        if(!regex.test(t)){
-            t.replace(t.value,'');
-            alert("특수문자는 입력하실 수 없습니다.");
-        }
-    }
-
-    function onlyNumberFunc(t){
-        var regExp = /[^0-9]/gi;
-        t.onkeyup = function(e){
-            var v = this.value;
-            this.value = v.replace(regExp,'');
-        }
-    }
-
     function showMaker(){
-        let etc=document.getElementById('etc');
         if(maker.value=='기타'){
-            etc.className=''
+            etc.className = ''
         }else{
             etc.className = 'hiddenDisplay'
         }
@@ -181,15 +243,7 @@
         }
     }
 
-    if($('div.item').hasClass("choice") === false){
-        $(this).attr('class', ' choice');}
-        // $('item').className -= ' choice';
-        //  } else { // class가 존재함
-        // } // class가 존재하지않음
 
-
-
-    let inputUpload = document.getElementById("uploadFile");
 
     function showTextFile() {
         let selectedFiles = inputUpload.files;
@@ -248,9 +302,9 @@
             // 정상적으로 검색이 완료됐으면
             // 검색 목록과 마커를 표출합니다
             displayPlaces(data);
-
             // 페이지 번호를 표출합니다
             displayPagination(pagination);
+
 
         } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
 
@@ -327,7 +381,6 @@
     // 검색결과 항목을 Element로 반환하는 함수입니다
     function getListItem(index, places) {
 
-
         if(places.place_name) {
             var el = document.createElement('li'),
                 itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' +
@@ -336,9 +389,10 @@
         } else {
             var el = document.createElement('li'),
                 itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' +
-                    '<div class="info click" id="' + (index) + '" onclick=findAddress("' + (index) + '")>' +
+                    '<div class="info click" id="' + (index) + '"  onclick=findAddress("' + (index) + '")>' +
                     '   <h5>' + '건물이름없음' + '</h5>';
         }
+
         if (places.road_address_name) {
             itemStr += '    <span class="address">' + places.road_address_name + '</span>' +
                 '   <span class="jibun gray" class="address">' +  places.address_name  + '</span>';
@@ -388,6 +442,10 @@
         markers = [];
     }
 
+    function choiceEvent(){
+        alert("fck");
+    }
+
     // 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
     function displayPagination(pagination) {
         var paginationEl = document.getElementById('pagination'),
@@ -428,6 +486,7 @@
 
         infowindow.setContent(content);
         infowindow.open(map, marker);
+
     }
 
     // 검색결과 목록의 자식 Element를 제거하는 함수입니다
@@ -448,6 +507,7 @@
             listStr = '';
 
         var keyword = document.getElementById('keyword').value;
+
         // 주소로 좌표를 검색합니다
         geocoder.addressSearch(keyword, function(result, status) {
 
@@ -496,17 +556,18 @@
                         itemEl.onmouseout =  function () {
                             infowindow.close();
                         };
+
                     })(marker, '건물이름없음');
 
                     fragment.appendChild(itemEl);
                 }
-
                 // 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
                 listEl.appendChild(fragment);
                 menuEl.scrollTop = 0;
 
                 // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
                 map.setBounds(bounds);
+
                 //그 다음에 할거
             }else if(status === kakao.maps.services.Status.ZERO_RESULT){
 
@@ -518,12 +579,17 @@
             }
         });
 
+        choiceOnOff='off'
     }
+
 
     function findAddress(index){
 
         let address = document.getElementsByClassName("address");
         let hiddenAddress=document.getElementsByName('address');
+        let choice = document.getElementById(index);
+        let choiceAddress = address[index].innerHTML;
+
 
         geocoder.addressSearch(address[index].innerHTML, function(result) {
 
@@ -532,10 +598,32 @@
                 map.setCenter(coords);
         });
 
-        hiddenAddress[0].value=address[index].innerHTML;
-        alert(hiddenAddress[0].value);
-    }
 
+
+        if(choiceOnOff=='off'){
+            choice.style.border='1px solid red';
+            choiceOnOff=choice.id;
+            addressResult.innerText=choiceAddress;
+            hiddenAddress[0].value=choiceAddress;
+        }else if(choiceOnOff==choice.id){
+            document.getElementById(choiceOnOff).style.border='none';
+            choiceOnOff='off';
+            addressResult.innerText='선택 주소';
+            hiddenAddress[0].value=null;
+        }else{
+            //이미 색칠된게 존재한다.
+            document.getElementById(choiceOnOff).style.border='none';
+            choiceOnOff=choice.id;
+            choice.style.border='1px solid red';
+            addressResult.innerText=choiceAddress;
+            hiddenAddress[0].value=choiceAddress;
+        }
+
+
+
+
+
+    }
 
 
 

@@ -14,5 +14,9 @@
         VALUE  (#{gno}, #{bno}, #{name}, #{path}, #{size}, #{extension}, #{regDt}, #{modifyDt}, #{delDt})
     </insert>
 
+    <select id="getGoodsList" resultType="Kams.Perfumance.vo.GoodsVO">
+            select * from goods
+    </select>
+
 </mapper>
 

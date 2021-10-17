@@ -1,24 +1,33 @@
 package Kams.Perfumance.controller;
 
 
+import Kams.Perfumance.service.BoardService;
 import Kams.Perfumance.service.MarketService;
+import Kams.Perfumance.vo.Criteria;
 import Kams.Perfumance.vo.FileVO;
 import Kams.Perfumance.vo.GoodsVO;
+import Kams.Perfumance.vo.PerfumeVO;
 import net.coobird.thumbnailator.Thumbnailator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.security.Principal;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -29,24 +38,43 @@ public class BoardController {
     @Autowired
     MarketService marketService;
 
+    @Autowired
+    BoardService boardService;
+
     @GetMapping("market")
     public String market(){ return "board/market"; }
 
-    @GetMapping("details")
-    public String details(){
-        return "board/details";
+    @GetMapping("info")
+    public String info(){
+        return "board/info";
     }
-
-    @GetMapping("result")
-    public String result(){
-        return "board/result";
-    }
-
-    @GetMapping("goodsdetail")
-    public String goodsDetail(){ return "board/goodsdetail"; }
 
     @GetMapping("post")
     public String post(){ return "board/post"; }
+
+    @GetMapping("perfumelist")
+    public String list(@ModelAttribute("criteria") Criteria cri, Model model) throws Exception{
+
+        List<PerfumeVO> boardList = boardService.getBoardList(cri);
+
+        model.addAttribute("boardList", boardList);
+
+        return "board/perfumelist";
+    }
+
+    @GetMapping("detail")
+    public String detail(@RequestParam("perfumeName") String perfumeName, Model model){
+
+        PerfumeVO pvo = boardService.getPerfumeInfo(perfumeName);
+        model.addAttribute(pvo.getPicture());
+        model.addAttribute(pvo.getPicture());
+        model.addAttribute(pvo.getPicture());
+        model.addAttribute(pvo.getPicture());
+        model.addAttribute(pvo.getPicture());
+        model.addAttribute(pvo.getPicture());
+
+        return "board/info";
+    }
 
     @PostMapping("posting")
     public String uploadForm(@RequestPart("uploadFile") MultipartFile[] uploadFile, Principal principal, String goodsName, String[] manufacturer,
@@ -62,7 +90,6 @@ public class BoardController {
         }else{
             validManufact=manufacturer[0];
         }
-
 
 
         if(!contact.equals("대면")){
@@ -113,6 +140,24 @@ public class BoardController {
          e.printStackTrace();
      }
         return "/board/post";
+    }
+
+
+    @GetMapping("/display")
+    @ResponseBody
+    public ResponseEntity<byte[]> getFile(String fileName){
+        File file = new File("c:\\upload\\"+fileName);
+        ResponseEntity<byte[]> result = null;
+
+        try{
+            HttpHeaders header = new HttpHeaders();
+
+            header.add("Content-Type", Files.probeContentType(file.toPath()));
+            result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return result;
     }
 
     //폴더 생성 메서드

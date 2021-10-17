@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link th:href="@{/css/perfumelist.css}" rel="stylesheet" />
+</head>
+<body>
+<header th:insert="common/fragment.html :: header"> </header>
+<div class="wrapper">
+  <div id=search>
+    <input type="text">
+  </div>
+</div>
+
+
+
+<div class="wrapper">
+
+  <tr th:if="${not #lists.isEmpty( boardList )}" th:each="row : ${boardList}">
+
+    <div id="perfumeList" name="perfumeList" class="perfumeList">
+    <div id="thumbnail">
+      <img th:src="|/board/display?fileName=${row.picture}|">
+    </div>
+
+    <div id="contents">
+      <td th:text="${row.name}"></td><br>
+      <form name="frm" action="detail">
+      <input type="hidden" name="perfumeName">
+      </form>
+      Top : <td th:text="${row.top}"></td><br>
+      Middle : <td th:text="${row.middle}"></td><br>
+      Base : <td th:text="${row.base}"></td>
+    </div>
+
+    </div>
+  </tr>
+
+  </div>
+  </div>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script>
+
+  $(document).ready(function(){
+  let frm = document.getElementsByName("frm");
+    $(".perfumeList").on("click", function() {
+      this.children[1].children[1].childNodes[1].value=this.children[1].childNodes[0].nodeValue.trim();
+      this.children[1].children[1].submit();
+    });
+  })
+
+
+    // let name = document.getElementById("contents").childNodes[0].nodeValue.trim();
+    // $("#perfumeList").on("click", function() {
+    //   $.ajax({
+    //     type: "GET",
+    //     url: "detail",
+    //     data: {"name" : name},
+    //     success: function (response) {
+    //       console.log(response)
+    //     },
+    //     // contentType: 'application/json; charset=utf-8',
+    //     dataType: "text",
+    //     error: function(){
+    //       alert("error");
+    //     }
+    //   })
+    // });
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+<footer th:insert="common/fragment.html :: footer"> </footer>
+</body>
+</html>
+
+
