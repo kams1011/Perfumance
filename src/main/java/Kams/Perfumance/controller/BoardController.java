@@ -3,20 +3,21 @@ package Kams.Perfumance.controller;
 
 import Kams.Perfumance.service.BoardService;
 import Kams.Perfumance.service.MarketService;
-import Kams.Perfumance.vo.Criteria;
-import Kams.Perfumance.vo.FileVO;
-import Kams.Perfumance.vo.GoodsVO;
-import Kams.Perfumance.vo.PerfumeVO;
+import Kams.Perfumance.service.PageMaker;
+import Kams.Perfumance.vo.*;
 import net.coobird.thumbnailator.Thumbnailator;
+import org.apache.catalina.connector.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,10 +26,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 
 @Controller
@@ -53,25 +51,49 @@ public class BoardController {
     public String post(){ return "board/post"; }
 
     @GetMapping("perfumelist")
-    public String list(@ModelAttribute("criteria") Criteria cri, Model model) throws Exception{
+    public String list(Criteria cri, Model model, String perfumeName) throws Exception{
+        //처음 Board 클릭 시 전체 향수 목록 보여주기.
+        List<PerfumeVO> perfumeList;  //받아오는 향수 리스트 (검색한 향수 or 전체 향수 목록)
+        int totalCount; //향수 갯수 (검색한 향수 갯수 or 전체 향수 갯수)
+        int lastPage;
+        HashMap<String, Object> perfumeInfo = new HashMap<String, Object>();
 
-        List<PerfumeVO> boardList = boardService.getBoardList(cri);
+        if(perfumeName==null){  //초기 화면 , 전체 리스트 보는 거라면
+            perfumeList = boardService.getBoardList(cri);
+            totalCount = boardService.getBoardTotalCount();
+            System.out.println(totalCount);
+        }else{ // 검색시 보여줄 화면ㅇ리ㅏ면
+            perfumeInfo.put("perfumeName", perfumeName);
+            perfumeInfo.put("pageStart", cri.getPageStart());
+            perfumeInfo.put("perPageNum", cri.getPerPageNum());
+            perfumeList = boardService.perfumeSearch(perfumeInfo);
+            totalCount = boardService.getCount(perfumeName);
+            model.addAttribute("perfumeName",perfumeInfo.get("perfumeName")); //검색어도 보내준다.
+        }
 
-        model.addAttribute("boardList", boardList);
+        if (totalCount / cri.getPerPageNum() == 0) {
+            lastPage = totalCount / cri.getPerPageNum();
+        }else{
+            lastPage = totalCount / cri.getPerPageNum() + 1;
+        }
+        PageMaker pageMaker = new PageMaker();
+        pageMaker.setCri(cri);
+        pageMaker.setTotalCount(totalCount);
+        model.addAttribute("perfumeList", perfumeList);
+        model.addAttribute("pageMaker", pageMaker);
+        model.addAttribute("lastPage", lastPage);
 
         return "board/perfumelist";
     }
 
+
     @GetMapping("detail")
-    public String detail(@RequestParam("perfumeName") String perfumeName, Model model){
+    public String detail(@RequestParam("detail") String perfumeName, Model model){
 
         PerfumeVO pvo = boardService.getPerfumeInfo(perfumeName);
-        model.addAttribute(pvo.getPicture());
-        model.addAttribute(pvo.getPicture());
-        model.addAttribute(pvo.getPicture());
-        model.addAttribute(pvo.getPicture());
-        model.addAttribute(pvo.getPicture());
-        model.addAttribute(pvo.getPicture());
+        List<GoodsVO> gvo = marketService.getGoodsList(perfumeName);
+        model.addAttribute("perfume", pvo);
+        model.addAttribute("goods", gvo);
 
         return "board/info";
     }
@@ -80,7 +102,7 @@ public class BoardController {
     public String uploadForm(@RequestPart("uploadFile") MultipartFile[] uploadFile, Principal principal, String goodsName, String[] manufacturer,
                              String expiryDt, String price, String contact, String address, String usableCapacity, String title, String explanation){
         Date date = new Date();
-        boolean isContact; //대면 여부 체크 변수
+        String isContact; //대면 여부 체크 변수
         int intPrice = Integer.parseInt(price);
         int intCapacity = Integer.parseInt(usableCapacity);
         String validManufact;  //배열로 오는 제조사 유효성검사 변수
@@ -93,10 +115,10 @@ public class BoardController {
 
 
         if(!contact.equals("대면")){
-            isContact=false;  //비대면이다.
+            isContact="비대면";  //비대면이다.
             address=null;
         }else{
-            isContact=true;  //대면이다.
+            isContact="대면";  //대면이다.
         }
 
 

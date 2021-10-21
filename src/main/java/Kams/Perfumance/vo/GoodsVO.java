@@ -15,7 +15,7 @@ public class GoodsVO {
     String goodsName;       //판매물품이름
     String expiryDt;        //유통기한
     int price;              //판매가격
-    boolean contact;        //대면여부
+    String contact;        //대면여부
     String address;         //판매장소
     int usableCapacity;     //잔여용량
     String title;           //글 제목
@@ -26,7 +26,7 @@ public class GoodsVO {
 
 
     @Builder
-    public GoodsVO(int gno, String id, String goodsName, String manufacturer,  String expiryDt, int price, boolean contact, String address,
+    public GoodsVO(int gno, String id, String goodsName, String manufacturer,  String expiryDt, int price, String contact, String address,
                    int usableCapacity, String title, String explanation, String status, Date writeDt, Date modifyDt){
         this.gno = gno;
         this.id = id;

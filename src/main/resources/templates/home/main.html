@@ -14,7 +14,10 @@
             <div class="mainBox" id="mainBox">
 
                 <div id="serchDiv">
-                <input id="search" placeholder="찾고 싶은 향수를 검색해보세요.">
+                    <form action="/board/perfumelist">
+                <input id="search" name="perfumeName" placeholder="찾고 싶은 향수를 검색해보세요.">
+                        <input type="submit" placeholder="검색하기">
+                    </form>
                 </div>
 
             </div>

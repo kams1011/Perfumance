@@ -17,4 +17,8 @@ public interface MarketMapper{
 
     List<GoodsVO> getListWithPaging(Criteria cri);
 
+    List<GoodsVO> getGoodsListByPerfumeName(String perfumeName);
+
+    GoodsVO getGoodsInfoByGno(int gno);
+
 }

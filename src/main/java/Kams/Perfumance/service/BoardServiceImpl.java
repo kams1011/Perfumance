@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,10 +26,10 @@ public class BoardServiceImpl implements BoardService{
     public List<PerfumeVO> getBoardList(Criteria cri) {
         List<PerfumeVO> boardList = Collections.emptyList();
 
-        int boardTotalCount = boardMapper.selectBoardTotalCount(cri);
+        int boardTotalCount = boardMapper.selectPerfumeTotalCount();
 
         if (boardTotalCount > 0) {
-            boardList = boardMapper.selectBoardList(cri);
+            boardList = boardMapper.selectPerfumeList(cri);
         }
 
         return boardList;
@@ -39,5 +40,25 @@ public class BoardServiceImpl implements BoardService{
     public PerfumeVO getPerfumeInfo(String perfumeName) {
 
         return boardMapper.perfumeInfo(perfumeName);
+    }
+
+
+    @Override
+    public int  getBoardTotalCount(){
+
+        return boardMapper.selectPerfumeTotalCount();
+
+    }
+
+    @Override
+    public List<PerfumeVO> perfumeSearch(HashMap<String, Object> perfumeInfo){
+
+        return boardMapper.selectPerfumeBySearch(perfumeInfo);
+    }
+
+    @Override
+    public int getCount(String perfumeName){
+
+        return boardMapper.countResult(perfumeName);
     }
 }

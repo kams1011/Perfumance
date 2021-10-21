@@ -5,6 +5,7 @@ import Kams.Perfumance.vo.Criteria;
 import Kams.Perfumance.vo.PerfumeVO;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,5 +16,9 @@ public interface BoardService {
 
    public PerfumeVO getPerfumeInfo(String perfumeName);
 
-//   public int selectBoardTotalCount(Criteria cri);
+   public int getBoardTotalCount();
+
+   public List<PerfumeVO> perfumeSearch(HashMap<String, Object> perfumeInfo);
+
+   public int getCount(String perfumeName);
 }

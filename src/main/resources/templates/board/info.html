@@ -6,23 +6,104 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <link th:href="@{/css/info.css}" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/swiper@6/swiper-bundle.min.css"/>
+    <link th:href="@{/css/info.css}" rel="stylesheet" />
+
 </head>
 <body>
 <header th:insert="common/fragment.html :: header"> </header>
 <div id="wrapper">
   <div class="contentHead">향수</div>
-  <div class="contentList">
-    <div id="perfume"></div>
-  </div>
+    <div id="perfumeDetailBox">
+      <div id="perfumeDetailPic">
+        <img th:src="|/board/display?fileName=${perfume.getPicture()}|">
+      </div>
+      <div id="perfumeDetail">
+        <div th:text="${perfume.getManufacturer()}" id="manufacturer"></div>
+        <div th:text="${perfume.getName()}" id="name"></div>
+        <div id="divide">
+          <div th:text="'Top : '+ ${perfume.getTop()}" id="top" class="note"></div>
+          <div th:text="'Middle : '+ ${perfume.getMiddle()}" id="middle" class="note"></div>
+          <div th:text="'Base : '+ ${perfume.getBase()}" id="base" class="note"></div>
+        </div>
+        <div th:text="'Size : '+${perfume.getSize()} +' ml'" id="size"></div>
+        <div th:text="'Price : $'+${perfume.getPrice()}" id="price"></div>
+
+      </div>
+    </div>
   <div class="contentHead">판매목록</div>
-  <div class="contentList">
-    <div id="sellerId"></div>
-    <div id="sellerGoods"></div>
-    <div id="sellerPrice"></div>
+
+
+  <div id="goodsList" class="goodsList swiper-container">
+    <div id="goodsLine1" class="goodsLine swiper-wrapper">
+      <div th:if="${#lists.isEmpty( goods )}"> 판매 목록이 없습니다.</div>
+      <tr th:if="${not #lists.isEmpty( goods )}" th:each="goods : ${goods}">
+      <div class="swiper-slide goods">
+        <div class="goodsPicture"></div>
+        <div class="goodsContents">
+<!--            <td th:text="${goods.getGno()}" class="hidden"></td>-->
+            <td th:text="${goods.getId()}"></td>
+            <td th:text="${goods.getPrice()}"></td>
+          <form name="frm" action="/goods/goodsdetail">
+            <input type="hidden" name="gno">
+          </form>
+        </div>
+      </div>
+        </tr>
+      </div>
+
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+
+      <div class="swiper-pagination"></div>
+  </div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
   </div>
 </div>
 
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://unpkg.com/swiper@6/swiper-bundle.min.js"></script>
+<script>
+
+  $(document).ready(function(){
+
+    let goods = document.getElementsByClassName("goods");
+    let gno = document.getElementsByName("gno");
+    $(".goods").on("click", function() {
+      this.children[1].childNodes[1].children[0].value=this.children[1].childNodes[0].nodeValue.trim().split("\n")[0];
+       this.children[1].children[0].submit();
+    })
+  })
+
+  const slide = new Swiper('#goodsList', {
+
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+
+    pagination: {
+      el: '.swiper-pagination',
+      type: 'bullets',
+    },
+    // 다양한 옵션 설정,
+    // 아래에서 설명하는 옵션들은 해당 위치에 들어갑니다!!
+    slidesPerView : 4,
+    spaceBetween : 20,
+    slidesPerGroup : 1
+  })
+</script>
 
 <footer th:insert="common/fragment.html :: footer"> </footer>
 </body>

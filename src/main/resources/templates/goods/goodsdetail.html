@@ -15,11 +15,46 @@
 <div class="wrapper">
   <div id="boardName">중고장터</div>
   <div class="contentHead">판매정보</div>
+
   <div id="goodsDetailBox">
-    <div id="goodsDetailPic" class="goods"></div>
-    <div id="goodsDetail" class="goods"></div>
+    <div id="goodsDetailPic" class="goods">
+      <tr th:if="${not #lists.isEmpty( file )}" th:each="img, i : ${file}">
+        <img th:if="${i.index==0}" th:src="|/board/display?fileName=${img.getPath()}/${img.getName()}|">
+        <div  th:if="${i.first}" id="arrow">
+          <img th:if="${i.first and i.size>1}" th:src="|/board/display?fileName=baseimg/left.png|" class="arrow" id="leftButton" onclick=leftMove()>
+          <img th:if="${i.first and i.size>1}" th:src="|/board/display?fileName=baseimg/right.png|" class="arrow" id="rightButton" onclick=rightMove()>
+        </div>
+        <img th:if="${file.size()>1}"th:src="|/board/display?fileName=${img.getPath()}/${img.getName()}|" style="display: none">
+      </tr>
+    </div>
+  </div>
+    <div id="goodsDetail" class="goods">
+      제목(다른곳으로)     <p th:text="${goods.getTitle()}"></p>
+      판매자   <p th:text="${goods.getId()}"></p>
+      제조사   <p th:text="${goods.getManufacturer()}"></p>
+      제품이름 <p th:text="${goods.getGoodsName()}"></p>
+      유통기한 <p th:text="${goods.getExpiryDt()}"></p>
+      잔여용량 <p th:text="${goods.getUsableCapacity()}"></p>
+      가격    <p th:text="${goods.getPrice()}"></p>
+      대면여부    <p th:text="${goods.getContact()}"></p>
+      주소    <p th:if="${goods.getContact()=='대면'}" th:text="${goods.getAddress()}"></p>
+    </div>
   </div>
 </div>
+
+
+<div class="wrapper">
+  <div class="contentHead">내용</div>
+  <div id="explanation">
+
+    <p th:text="${goods.getExplanation()}"></p>
+  </div>
+</div>-
+
+
+
+
+
 
 <div class="wrapper">
   <div class="contentHead">판매위치</div>
@@ -33,8 +68,7 @@
 
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=27ea90f061ba8e5959bf610c7ba95b02&libraries=services"></script>
-
-<script>
+<script th:inline="javascript">
   var mapContainer = document.getElementById('mapBox'), // 지도를 표시할 div
           mapOption = {
             center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
@@ -44,6 +78,72 @@
           };
 
   var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+  // 주소-좌표 변환 객체를 생성합니다
+  var geocoder = new kakao.maps.services.Geocoder();
+  /*<![CDATA[*/
+  let address = /*[[${goods.getAddress()}]]*/;
+  /*]]*/
+
+  // 주소로 좌표를 검색합니다
+  geocoder.addressSearch(address, function(result, status) {
+
+    // 정상적으로 검색이 완료됐으면
+    if (status === kakao.maps.services.Status.OK) {
+
+      var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+      // 결과값으로 받은 위치를 마커로 표시합니다
+      var marker = new kakao.maps.Marker({
+        map: map,
+        position: coords
+      });
+
+      // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+      map.setCenter(coords);
+    }
+  });
+  /*<![CDATA[*/
+  let length = /*[[${file.size()}]]*/;
+  /*]]*/
+
+  let goodsDetailPic = document.getElementById("goodsDetailPic");
+
+    let order = 2;
+  // t.children[2345].src
+
+   function leftMove(){
+      if(order==2){
+        alert('첫번째 사진입니다.');
+        return;
+      }else{
+        order=order-1;
+        goodsDetailPic.children[0].src=goodsDetailPic.children[order].src;
+      }
+   }
+
+   function rightMove(){
+     if(order==length+1){
+       alert('마지막 사진입니다.');
+       return;
+     }else{
+       order = order + 1;
+       goodsDetailPic.children[0].src=goodsDetailPic.children[order].src;
+     }
+   }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </script>

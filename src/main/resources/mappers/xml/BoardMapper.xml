@@ -5,16 +5,17 @@
 <mapper namespace="Kams.Perfumance.mapper.BoardMapper">
 
 
-    <select id="selectBoardList" parameterType="Kams.Perfumance.vo.Criteria" resultType="Kams.Perfumance.vo.PerfumeVO">
+    <select id="selectPerfumeList" parameterType="Kams.Perfumance.vo.Criteria" resultType="Kams.Perfumance.vo.PerfumeVO">
         SELECT
         *
         FROM
         perfume
         LIMIT
-        #{startPage}, #{recordsPerPage}
+        #{pageStart}, #{perPageNum}
     </select>
 
-    <select id="selectBoardTotalCount" parameterType="Kams.Perfumance.vo.Criteria" resultType="int">
+<!--    <select id="selectBoardTotalCount" parameterType="Kams.Perfumance.vo.Criteria" resultType="int">-->
+    <select id="selectPerfumeTotalCount" resultType="int">
         SELECT
             COUNT(*)
         FROM
@@ -30,6 +31,17 @@
         where
             name=#{perfumeName}
     </select>
+
+
+    <select id="selectPerfumeBySearch" parameterType="HashMap" resultType="Kams.Perfumance.vo.PerfumeVO">
+        SELECT * FROM perfume WHERE NAME LIKE CONCAT('%',#{perfumeName},'%') LIMIT #{pageStart}, #{perPageNum}
+    </select>
+
+    <select id="countResult" resultType="int">
+        SELECT COUNT(*) FROM perfume WHERE NAME LIKE CONCAT('%',#{perfumeName},'%')
+    </select>
+
+
 
 
 

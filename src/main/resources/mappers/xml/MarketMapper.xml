@@ -18,5 +18,15 @@
             select * from goods
     </select>
 
+    <select id="getGoodsListByPerfumeName" resultType="Kams.Perfumance.vo.GoodsVO">
+        select * from goods where goodsName=#{perfumeName};
+    </select>
+
+    <select id="getGoodsInfoByGno" resultType="Kams.Perfumance.vo.GoodsVO">
+        select * from goods where gno=#{gno}
+    </select>
+
+
+
 </mapper>
 

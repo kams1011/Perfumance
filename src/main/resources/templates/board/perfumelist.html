@@ -7,12 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link th:href="@{/css/perfumelist.css}" rel="stylesheet" />
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 </head>
 <body>
 <header th:insert="common/fragment.html :: header"> </header>
 <div class="wrapper">
-  <div id=search>
-    <input type="text">
+  <div id=searchBox>
+    <form action="perfumelist" id="searchForm">
+    <input type="text" id="search" name="perfumeName">
+    </form>
+    <input type="submit" placeholder="검색" id="searchButton">
   </div>
 </div>
 
@@ -20,7 +24,7 @@
 
 <div class="wrapper">
 
-  <tr th:if="${not #lists.isEmpty( boardList )}" th:each="row : ${boardList}">
+  <tr th:if="${not #lists.isEmpty( perfumeList )}" th:each="row : ${perfumeList}">
 
     <div id="perfumeList" name="perfumeList" class="perfumeList">
     <div id="thumbnail">
@@ -30,7 +34,7 @@
     <div id="contents">
       <td th:text="${row.name}"></td><br>
       <form name="frm" action="detail">
-      <input type="hidden" name="perfumeName">
+      <input type="hidden" name="detail">
       </form>
       Top : <td th:text="${row.top}"></td><br>
       Middle : <td th:text="${row.middle}"></td><br>
@@ -40,7 +44,37 @@
     </div>
   </tr>
 
-  </div>
+  <ul class="btn-group pagination">
+
+
+      <li th:if="${pageMaker.prev==true}">
+          <a th:href="@{/board/perfumelist?page=1&(perfumeName=${perfumeName})}" th:text="처음"/><i class="fa fa-chevron-left"></i>
+      </li>
+
+      <li th:if="${pageMaker.prev==true}">
+        <a th:href="@{/board/perfumelist?(page=${pageMaker.startPage-1}, perfumeName=${perfumeName})}" th:text="이전"/><i class="fa fa-chevron-left"></i>
+      </li>
+
+      <tr th:each="num : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}">
+      <li>
+        <a th:href="@{/board/perfumelist?(page=${num}, perfumeName=${perfumeName})}" th:text="${num}" /><i class="fa"></i>
+      </li>
+    </tr>
+
+      <li th:if="${pageMaker.next==true and pageMaker.endPage >0 }">
+        <a th:href="@{/board/perfumelist?(page=${pageMaker.endPage+1}, perfumeName=${perfumeName})}" th:text="다음"/><i class="fa fa-chevron-right"></i>
+      </li>
+
+    <li>
+      <a th:if="${pageMaker.next==true and pageMaker.endPage >0 }" th:href="@{/board/perfumelist?(page=${lastPage}, perfumeName=${perfumeName})}" th:text="끝"/><i class="fa fa-chevron-right"></i>
+    </li>
+
+  </ul>
+
+
+
+
+
   </div>
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
@@ -52,7 +86,15 @@
       this.children[1].children[1].childNodes[1].value=this.children[1].childNodes[0].nodeValue.trim();
       this.children[1].children[1].submit();
     });
+
+
+  $("#searchButton").on("click", function (){
+    $("#searchForm").submit();
   })
+  })
+
+
+
 
 
     // let name = document.getElementById("contents").childNodes[0].nodeValue.trim();

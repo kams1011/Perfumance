@@ -3,7 +3,7 @@
     width:250px;
     border:1px solid black;
     border-radius: 5px;
-    
+    margin-right:10px;
 }
 
 .goodsPicture{
@@ -39,3 +39,9 @@ p{
     font-size: 12px;
 }
 
+#search{
+    margin-left:27%;
+    height:40px;
+    width:500px;
+    text-align:center;
+}

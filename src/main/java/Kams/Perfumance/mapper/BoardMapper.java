@@ -5,6 +5,7 @@ import Kams.Perfumance.vo.Criteria;
 import Kams.Perfumance.vo.PerfumeVO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,11 +13,14 @@ import java.util.Map;
 public interface BoardMapper {
 
 
-    public List<PerfumeVO> selectBoardList(Criteria cri);
+    public List<PerfumeVO> selectPerfumeList(Criteria cri);
 
-    public int selectBoardTotalCount(Criteria criteria);
+    public int selectPerfumeTotalCount();
 
     public PerfumeVO perfumeInfo(String perfumeName);
 
+    public List<PerfumeVO> selectPerfumeBySearch(HashMap<String, Object> perfumeInfo);
+
+    public int countResult(String perfumeName);
 
 }

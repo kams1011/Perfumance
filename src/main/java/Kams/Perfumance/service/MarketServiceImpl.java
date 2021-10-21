@@ -8,6 +8,8 @@ import Kams.Perfumance.vo.GoodsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MarketServiceImpl implements MarketService {
 
@@ -26,5 +28,17 @@ public class MarketServiceImpl implements MarketService {
     @Override
     public void fileSave(FileVO fileVO) {
         marketMapper.fileInfoInsert(fileVO);
+    }
+
+
+    @Override
+    public List<GoodsVO> getGoodsList(String perfumeName){
+
+        return marketMapper.getGoodsListByPerfumeName(perfumeName);
+    }
+
+    @Override
+    public GoodsVO getGoodsInfo(int gno){
+        return marketMapper.getGoodsInfoByGno(gno);
     }
 }
