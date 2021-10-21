@@ -89,7 +89,6 @@ public class BoardController {
 
     @GetMapping("detail")
     public String detail(@RequestParam("detail") String perfumeName, Model model){
-
         PerfumeVO pvo = boardService.getPerfumeInfo(perfumeName);
         List<GoodsVO> gvo = marketService.getGoodsList(perfumeName);
         model.addAttribute("perfume", pvo);

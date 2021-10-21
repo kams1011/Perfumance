@@ -21,4 +21,6 @@ public interface BoardService {
    public List<PerfumeVO> perfumeSearch(HashMap<String, Object> perfumeInfo);
 
    public int getCount(String perfumeName);
+
+   public void insertData();
 }

@@ -41,6 +41,11 @@
         SELECT COUNT(*) FROM perfume WHERE NAME LIKE CONCAT('%',#{perfumeName},'%')
     </select>
 
+    <insert id="insertPerfumeData" useGeneratedKeys="true" keyProperty="nno">
+        INSERT INTO note(category, notes) VALUE (#{category}, #{notes})
+    </insert>
+
+
 
 
 

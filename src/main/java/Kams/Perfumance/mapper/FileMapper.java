@@ -9,6 +9,6 @@ import java.util.List;
 public interface FileMapper {
 
 
-    public List<FileVO> selectFileByGno(int gno);
+    public List<FileVO> selectFileByGno(int gno); // 굿즈번호로 파일 가져오기
 
 }

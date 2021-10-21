@@ -5,9 +5,13 @@ import Kams.Perfumance.mapper.BoardMapper;
 import Kams.Perfumance.mapper.MarketMapper;
 import Kams.Perfumance.vo.Criteria;
 import Kams.Perfumance.vo.PerfumeVO;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -60,5 +64,36 @@ public class BoardServiceImpl implements BoardService{
     public int getCount(String perfumeName){
 
         return boardMapper.countResult(perfumeName);
+    }
+
+    @Override
+    public void insertData(){
+
+        String url = "https://www.fragrantica.com/notes/"; //크롤링할 url지정
+        Document doc = null;        //Document에는 페이지의 전체 소스가 저장된다
+        Map<String, String> perfumeData = new HashMap<>();
+
+        try {
+            doc = Jsoup.connect(url).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Elements categories= doc.select(".text-center > h2"); // 이게 카테고리
+        Elements notes;
+
+
+        for(int i=0; i< categories.size(); i++) {
+            if(i<9){
+                notes = doc.select("#groupnotes_group_0"+(i+1)+"_title").next().next().select("a");
+            }else{
+                notes = doc.select("#groupnotes_group_"+(i+1)+"_title").next().next().select("a");
+            }
+            perfumeData.put("category", categories.get(i).text());
+
+            for(int j=0; j<notes.size(); j++){
+                perfumeData.put("notes", notes.get(j).text());
+                boardMapper.insertPerfumeData(perfumeData);
+            }
+        }
     }
 }
