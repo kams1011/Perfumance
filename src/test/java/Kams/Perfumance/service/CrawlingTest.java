@@ -13,8 +13,6 @@ public class CrawlingTest {
     @Autowired
     BoardService boardService;
 
-
-
     @Test
   public void crawlingTest(){
        boardService.insertData();
