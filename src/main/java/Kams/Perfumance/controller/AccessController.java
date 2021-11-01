@@ -1,7 +1,7 @@
 package Kams.Perfumance.controller;
 
 import Kams.Perfumance.service.SecurityService;
-import Kams.Perfumance.vo.MemberVo;
+import Kams.Perfumance.vo.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +33,7 @@ public class AccessController {
 
     @PostMapping("/register")
     public String register(String id, String pwd, String email, String nick){
-        MemberVo memberVo = MemberVo.builder()
+        MemberVO memberVo = MemberVO.builder()
                 .id(id)
                 .pwd(pwd)
                 .nick(nick)

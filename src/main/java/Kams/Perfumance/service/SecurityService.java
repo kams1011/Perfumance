@@ -1,10 +1,10 @@
 package Kams.Perfumance.service;
 
 import Kams.Perfumance.mapper.MemberMapper;
-import Kams.Perfumance.vo.MemberPrincipalVo;
-import Kams.Perfumance.vo.RoleVo;
-import Kams.Perfumance.vo.MemberVo;
-import Kams.Perfumance.vo.UserRoleVo;
+import Kams.Perfumance.vo.MemberPrincipalVO;
+import Kams.Perfumance.vo.RoleVO;
+import Kams.Perfumance.vo.MemberVO;
+import Kams.Perfumance.vo.UserRoleVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,13 +37,10 @@ public class SecurityService implements UserDetailsService {
 
     //DB에서 유저정보를 불러온다. Custom한 Userdetails 클래스를 리턴 해주면 된다.(실질적인 로그인코드)
     @Override
-    public MemberPrincipalVo loadUserByUsername(String username) throws UsernameNotFoundException {
-        ArrayList<MemberVo> memberVos = memberMapper.findByUserId(username);
-        MemberPrincipalVo memberPrincipalVo = new MemberPrincipalVo(memberVos);
-//        memberMapper.resetTryCount(memberVos.get(0).getId());
-
+    public MemberPrincipalVO loadUserByUsername(String username) throws UsernameNotFoundException {
+        ArrayList<MemberVO> memberVos = memberMapper.findByUserId(username);
+        MemberPrincipalVO memberPrincipalVo = new MemberPrincipalVO(memberVos);
             return memberPrincipalVo;
-
     }
 
     public void SignUp(@Param("id") String id, @Param("pwd") String pwd, @Param("nick") String nick, @Param("email") String email) {
@@ -56,7 +53,7 @@ public class SecurityService implements UserDetailsService {
             }else{
                 // 비밀번호 암호화
                 String encodePassword = bCryptPasswordEncoder.encode(pwd);
-                MemberVo member = MemberVo.builder()
+                MemberVO member = MemberVO.builder()
                         .enabled("true")
                         .id(id)
                         .pwd(encodePassword)
@@ -70,13 +67,13 @@ public class SecurityService implements UserDetailsService {
                 //DB에 회원정보 등록
                 memberMapper.InsertUser(member);
                 //ROLE 등록을 위한 객체 생성
-                UserRoleVo userRoleVo = UserRoleVo.builder()
+                UserRoleVO userRoleVo = UserRoleVO.builder()
                         .uno(memberMapper.findUserNo(id))
                         .rno(2)
                         .build();
                 //DB에 ROLE 등록
                 memberMapper.userRoleSave(userRoleVo.getUno(), userRoleVo.getRno());
-
+                ///이거 트랜잭션 처리 제대로 되나 확인. 아이디 회원가입은 되는데 role에 입력안되는거같기도함.
                 System.out.println("회원가입 완료.");
             }
         }catch(Exception e) {

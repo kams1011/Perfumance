@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.Date;
 
 @Getter
-public class MemberVo {
+public class MemberVO {
     
     private int uno; // 인조키
     private String enabled; // 계정 활성화 여부
@@ -23,8 +23,8 @@ public class MemberVo {
 
 
     @Builder
-    public MemberVo(int uno, String enabled, String id, String pwd, String nick, String email, String img,
-                     Date regDt, Date delDt, int dealNum, int tryCount){
+    public MemberVO(int uno, String enabled, String id, String pwd, String nick, String email, String img,
+                    Date regDt, Date delDt, int dealNum, int tryCount){
         this.uno = uno;
         this.enabled = enabled;
         this.id = id;

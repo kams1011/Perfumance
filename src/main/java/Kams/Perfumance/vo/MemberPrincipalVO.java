@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 
-public class MemberPrincipalVo implements UserDetails {
+public class MemberPrincipalVO implements UserDetails {
 
-    private ArrayList<MemberVo> memberVo;
+    private ArrayList<MemberVO> memberVO;
     private ArrayList<GrantedAuthority> authorities;
 
-    public MemberPrincipalVo(ArrayList<MemberVo> memberVo){
-        this.memberVo = memberVo;
+    public MemberPrincipalVO(ArrayList<MemberVO> memberVO){
+        this.memberVO = memberVO;
     }
 
     @Override // 계정이 갖고있는 권한 목록을 리턴한다.
@@ -25,13 +25,13 @@ public class MemberPrincipalVo implements UserDetails {
 
     @Override // 유저 아이디
     public String getUsername(){
-        return memberVo.get(0).getId();
+        return memberVO.get(0).getId();
     }
     
     
     @Override // 유저 비밀번호
     public String getPassword(){
-        return memberVo.get(0).getPwd();
+        return memberVO.get(0).getPwd();
     }
 
 

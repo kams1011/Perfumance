@@ -40,28 +40,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean //실제 인증을 한 이후 인증이 완료되면 Authentication객체 반환. 화면에서 입력한 로그인정보와 DB에서 가져온 사용자 정보 비교
-//    public DaoAuthenticationProvider authenticationProvider(SecurityService securityService){
-//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-//        authenticationProvider.setUserDetailsService(securityService);
-//        authenticationProvider.setPasswordEncoder(passwordEncoder());
-//        return authenticationProvider;
-//    }
-
-    @Override //Home 디렉토리 하위 파일 목록은 항상 통과
+    @Override //css는 항상 통과
     public void configure(WebSecurity web) throws Exception{
         web.ignoring().antMatchers("/css/**");
     }
 
     @Override // HTTP 보안
     protected void configure(HttpSecurity http) throws Exception{
+//        http.csrf().disable();
         http
                 .authorizeRequests()
                 .antMatchers("/home/**","/access/**").permitAll()
                 .antMatchers("https://dapi.kakao.com/v2/local/search/**").permitAll()
                 .and()
              .authorizeRequests()
-                .antMatchers("/board/**","/user/**").hasRole("USER")
+                .antMatchers("/board/**","/user/**").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
@@ -72,10 +65,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .successHandler(successHandler)
                 .failureHandler(failureHandler)
                 .and()
+             .exceptionHandling().accessDeniedPage("/access/denied")//에러페이지로 이동
+                .and()
              .logout()
                 .permitAll();
-
-        http.exceptionHandling().accessDeniedPage("/denied"); //에러페이지로 이동
 
     }
 
@@ -91,6 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                         + "from user_role ur inner join user_info ui on ur.uno = ui.uno "
                         + "inner join role r on ur.rno = r.rno "
                         + "where ui.id = ?");
+
     }
 
 

@@ -1,7 +1,7 @@
 package Kams.Perfumance.mapper;
 
 
-import Kams.Perfumance.vo.MemberVo;
+import Kams.Perfumance.vo.MemberVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import java.util.ArrayList;
@@ -12,13 +12,13 @@ import java.util.List;
 public interface MemberMapper {
 
     //유저 목록 불러오기
-    List<MemberVo> getList();
+    List<MemberVO> getList();
 
     //유저 등록하기
-    int InsertUser(MemberVo uvo);
+    int InsertUser(MemberVO uvo);
 
     //유저 정보 불러오기
-    ArrayList<MemberVo> findByUserId(String id);
+    ArrayList<MemberVO> findByUserId(String id);
 
     //유저 권한 저장
     int userRoleSave(@Param("uno") int uno, @Param("rno") int rno);
@@ -38,5 +38,6 @@ public interface MemberMapper {
     //로그인 성공시 로그인 실패 회수 초기화하기
     int resetTryCount(String id);
 
+    String getAuth(String id);
 
 }

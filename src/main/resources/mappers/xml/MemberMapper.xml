@@ -4,7 +4,7 @@
 
 <mapper namespace="Kams.Perfumance.mapper.MemberMapper">
 
-    <select id="getList" resultType="Kams.Perfumance.vo.MemberVo">
+    <select id="getList" resultType="Kams.Perfumance.vo.MemberVO">
         SELECT * FROM user_info
     </select>
 
@@ -13,11 +13,11 @@
         VALUE (#{enabled},#{id},#{pwd},#{nick},#{email},#{img},#{regDt},#{delDt},#{dealNum},#{tryCount})
     </insert>
 
-    <select id="findByUserId" resultType="Kams.Perfumance.vo.MemberVo">
+    <select id="findByUserId" resultType="Kams.Perfumance.vo.MemberVO">
         SELECT * FROM user_info WHERE id=#{id}
     </select>
 
-    <select id="findUserNo" resultType="Integer">
+    <select id="findUserNo" resultType="int">
         SELECT uno FROM user_info WHERE id=#{id}
     </select>
 
@@ -46,6 +46,11 @@
     <update id="resetTryCount">
         UPDATE user_info SET tryCount=0 WHERE id=#{id}
     </update>
+
+    <select id="getAuth" resultType="String">
+        select r.role from user_role ur inner join user_info ui on ur.uno = ui.uno
+        inner join role r on ur.rno = r.rno where ui.id = #{id}
+    </select>
 
 
 </mapper>

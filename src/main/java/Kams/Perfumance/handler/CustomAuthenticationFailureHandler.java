@@ -1,7 +1,7 @@
 package Kams.Perfumance.handler;
 
 import Kams.Perfumance.service.UserServiceImpl;
-import Kams.Perfumance.vo.MemberVo;
+import Kams.Perfumance.vo.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -23,8 +23,11 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+        exception.printStackTrace();
         String id=request.getParameter("username");
-        ArrayList<MemberVo> loginUser=userService.getUserInfo(id);
+        System.out.println(id);
+
+        ArrayList<MemberVO> loginUser=userService.getUserInfo(id);
         int tryNum = loginUser.get(0).getTryCount();
         String enabled = loginUser.get(0).getEnabled();
 
@@ -39,6 +42,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
             }
         }
 
+        exception.printStackTrace();
         System.out.println(loginUser.get(0).getEnabled());
         System.out.println(id);
         System.out.println(tryNum);

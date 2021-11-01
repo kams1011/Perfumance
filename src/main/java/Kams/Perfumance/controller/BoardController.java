@@ -62,7 +62,7 @@ public class BoardController {
             perfumeList = boardService.getBoardList(cri);
             totalCount = boardService.getBoardTotalCount();
             System.out.println(totalCount);
-        }else{ // 검색시 보여줄 화면ㅇ리ㅏ면
+        }else{ // 검색시 보여줄 화면
             perfumeInfo.put("perfumeName", perfumeName);
             perfumeInfo.put("pageStart", cri.getPageStart());
             perfumeInfo.put("perPageNum", cri.getPerPageNum());

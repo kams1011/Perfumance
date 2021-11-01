@@ -5,14 +5,14 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class UserRoleVo {
+public class UserRoleVO {
 
     private int uno;
     private int rno;
 
 
     @Builder
-    public UserRoleVo(int uno, int rno){
+    public UserRoleVO(int uno, int rno){
         this.uno = uno;
         this.rno = rno;
     }

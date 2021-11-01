@@ -1,12 +1,10 @@
 package Kams.Perfumance.service;
 
 import Kams.Perfumance.mapper.MemberMapper;
-import Kams.Perfumance.vo.MemberVo;
+import Kams.Perfumance.vo.MemberVO;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -20,7 +18,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<MemberVo> getAllUser() {
+    public List<MemberVO> getAllUser() {
         return memberMapper.getList();
     }
 
@@ -28,7 +26,7 @@ public class UserServiceImpl implements UserService {
     public String userDisabled(String id){ return memberMapper.updateEnabled(id); }
 
     @Override
-    public ArrayList<MemberVo> getUserInfo(String id){
+    public ArrayList<MemberVO> getUserInfo(String id){
         return memberMapper.findByUserId(id);
     }
 
